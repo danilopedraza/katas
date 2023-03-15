@@ -377,6 +377,19 @@ function decideGame(game) {
     }
 }
 
+function play(pairOfHands) {
+    const game = readGame(pairOfHands);
+    if (typeof game === "undefined")
+        console.log("Bad input");
+    else
+        console.log(decideGame(game));
+}
+
+play("Black: 2H 3D 5S 9C KD  White: 2C 3H 4S 8C AH");
+play("Black: 2H 4S 4C 2D 4H  White: 2S 8S AS QS 3S");
+play("Black: 2H 3D 5S 9C KD  White: 2C 3H 4S 8C KH");
+play("Black: 2H 3D 5S 9C KD  White: 2D 3H 5C 9S KH");
+
 const functions = {
     // input parsing functions
     readValue,

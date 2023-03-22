@@ -29,7 +29,7 @@ Tie.
 
 
 function readValue(input) {
-    if (!/^(T|J|Q|K|A|[1-9])$/.test(input))
+    if (!/^[1-9TJQKA]$/.test(input))
         return undefined;
         
     switch (input) {
@@ -43,7 +43,7 @@ function readValue(input) {
 }
 
 function readSuit(input) {
-    if (/^C|D|H|S$/.test(input))
+    if (/^[CDHS]$/.test(input))
         return input;
     else
         return undefined;

@@ -237,21 +237,31 @@ const valueToName = [
     null,
     '1', '2', '3', '4', '5', '6', '7', '8', '9', '10',
     "Jack", "Queen", "King", "Ace",
-]
+];
+
+function verdictMessage(winner, message, value) {
+    return winner
+        + message
+        + valueToName[value];
+}
 
 function untieByhighCard(firstPlayer, secondPlayer, sortByRepsFirst) {
     const firstSorted = sortedDistinctValues(firstPlayer.hand, sortByRepsFirst);
     const secondSorted = sortedDistinctValues(secondPlayer.hand, sortByRepsFirst);
-                
+    
     for (let i = 0; i < 5; i++)
         if      (firstSorted[i].value > secondSorted[i].value)
-            return firstPlayer.player
-                 + " wins. - with high card: "
-                 + valueToName[firstSorted[i].value];
+            return verdictMessage(
+                firstPlayer.player,
+                " wins. - with high card: ",
+                firstSorted[i].value
+            );
         else if (firstSorted[i].value < secondSorted[i].value)
-            return secondPlayer.player
-                 + " wins. - with high card: "
-                 + valueToName[secondSorted[i].value];
+            return verdictMessage(
+                secondPlayer.player,
+                " wins. - with high card: ",
+                secondSorted[i].value
+            );
 
     return "Tie.";
 }
@@ -283,12 +293,14 @@ function decideGame(game) {
         const whoWins = firstRank < secondRank;
         const winner = whoWins ? firstPlayer : secondPlayer;
         const winnerRank = whoWins ? firstRank : secondRank;
-
+        
         switch (winnerRank) {
             case 0:
-                return winner.player
-                     + " wins. - with straight flush: "
-                     + valueToName[sortedDistinctValues(winner.hand)[0].value];
+                return verdictMessage(
+                    winner.player,
+                    " wins. - with straight flush: ",
+                    sortedDistinctValues(winner.hand)[0].value
+                );
             case 1:
                 return winner.player
                      + " wins. - with four of a kind: "
@@ -306,32 +318,40 @@ function decideGame(game) {
                      + valueToName[sortedDistinctValues(winner.hand).find(
                         count => count.repetitions === 2).value];
             case 3:
-                return winner.player
-                     + " wins. - with flush: "
-                     + valueToName[sortedDistinctValues(winner.hand)[0].value];
+                return verdictMessage(
+                    winner.player,
+                    " wins. - with flush: ",
+                    sortedDistinctValues(winner.hand)[0].value
+                );
             case 4:
-                return winner.player
-                     + " wins. - with straight: "
-                     + valueToName[sortedDistinctValues(winner.hand)[0].value];
+                return verdictMessage(
+                    winner.player,
+                    " wins. - with straight: ",
+                    sortedDistinctValues(winner.hand)[0].value
+                );
             case 5:
-                return winner.player
-                     + " wins. - with three of a kind: "
-                     + valueToName[sortedDistinctValues(winner.hand).find(
-                        count => count.repetitions === 3).value];
+                return verdictMessage(
+                    winner.player,
+                    " wins. - with three of a kind: ",
+                    sortedDistinctValues(winner.hand).find(
+                        count => count.repetitions === 3).value
+                );
             case 6:
-                return winner.player
-                     + " wins. - with two pairs: "
-                     + valueToName[sortedDistinctValues(winner.hand).find(
-                        count => count.repetitions === 2).value];
+                return verdictMessage(
+                    winner.player,
+                    " wins. - with two pairs: ",
+                    sortedDistinctValues(winner.hand).find(
+                        count => count.repetitions === 2).value
+                );
             case 7:
-                return winner.player
-                     + " wins. - with pair: "
-                     + valueToName[sortedDistinctValues(winner.hand).find(
-                        count => count.repetitions === 2).value];
-            case 8:
-                return undefined; // impossible
+                return verdictMessage(
+                    winner.player,
+                    " wins. - with pair: ",
+                    sortedDistinctValues(winner.hand).find(
+                        count => count.repetitions === 2).value
+                );
             default:
-                return undefined;
+                throw new Error("Not covered case (impossible)");
         }
     }
     else {
@@ -355,7 +375,7 @@ function decideGame(game) {
             case 8: // high card (both flags work)
                 return untieByhighCard(firstPlayer, secondPlayer, false);
             default:
-                return undefined;
+                throw new Error("Not covered case (impossible)");
         }
     }
 }

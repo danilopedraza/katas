@@ -266,6 +266,93 @@ function untieByhighCard(firstPlayer, secondPlayer, sortByRepsFirst) {
     return "Tie.";
 }
 
+function getHigherRankVerdictMessage(winner, winnerRank) {
+    switch (winnerRank) {
+        case 0:
+            return createVerdictMessage(
+                winner.player,
+                " wins. - with straight flush: ",
+                sortedDistinctValues(winner.hand)[0].value
+            );
+        case 1:
+            return winner.player
+                 + " wins. - with four of a kind: "
+                 + valueToName[sortedDistinctValues(winner.hand).find(
+                    count => count.repetitions === 4).value]
+                 + " over "
+                 + valueToName[sortedDistinctValues(winner.hand).find(
+                    count => count.repetitions === 1).value];
+        case 2:
+            return winner.player
+                 + " wins. - with full house: "
+                 + valueToName[sortedDistinctValues(winner.hand).find(
+                    count => count.repetitions === 3).value]
+                 + " over "
+                 + valueToName[sortedDistinctValues(winner.hand).find(
+                    count => count.repetitions === 2).value];
+        case 3:
+            return createVerdictMessage(
+                winner.player,
+                " wins. - with flush: ",
+                sortedDistinctValues(winner.hand)[0].value
+            );
+        case 4:
+            return createVerdictMessage(
+                winner.player,
+                " wins. - with straight: ",
+                sortedDistinctValues(winner.hand)[0].value
+            );
+        case 5:
+            return createVerdictMessage(
+                winner.player,
+                " wins. - with three of a kind: ",
+                sortedDistinctValues(winner.hand).find(
+                    count => count.repetitions === 3).value
+            );
+        case 6:
+            return createVerdictMessage(
+                winner.player,
+                " wins. - with two pairs: ",
+                sortedDistinctValues(winner.hand).find(
+                    count => count.repetitions === 2).value
+            );
+        case 7:
+            return createVerdictMessage(
+                winner.player,
+                " wins. - with pair: ",
+                sortedDistinctValues(winner.hand).find(
+                    count => count.repetitions === 2).value
+            );
+        default:
+            throw new Error("Not covered case (impossible)");
+    }
+}
+
+function getEqualRankVerdictMessage(firstPlayer, secondPlayer, rank) {
+    switch (rank) {
+        case 0: // straight flush (both flags work)
+            return untieByhighCard(firstPlayer, secondPlayer, false);
+        case 1: // four of a kind
+            return untieByhighCard(firstPlayer, secondPlayer, true);
+        case 2: // full house
+            return untieByhighCard(firstPlayer, secondPlayer, true);
+        case 3: // flush
+            return untieByhighCard(firstPlayer, secondPlayer, false);
+        case 4: // straight (both flags work)
+            return untieByhighCard(firstPlayer, secondPlayer, false);
+        case 5: // three of a kind
+            return untieByhighCard(firstPlayer, secondPlayer, true);
+        case 6: // two pairs
+            return untieByhighCard(firstPlayer, secondPlayer, true);
+        case 7: // pair
+            return untieByhighCard(firstPlayer, secondPlayer, true);
+        case 8: // high card (both flags work)
+            return untieByhighCard(firstPlayer, secondPlayer, false);
+        default:
+            throw new Error("Not covered case (impossible)");
+    }
+}
+
 function decideGame(game) {
     const combinations = [
         isStraightFlush,
@@ -291,92 +378,17 @@ function decideGame(game) {
 
     if (firstRank !== secondRank) {
         const whoWins = firstRank < secondRank;
-        const winner = whoWins ? firstPlayer : secondPlayer;
-        const winnerRank = whoWins ? firstRank : secondRank;
+        const winner = whoWins ?
+            firstPlayer :
+            secondPlayer;
+        const winnerRank = whoWins ?
+            firstRank :
+            secondRank;
         
-        switch (winnerRank) {
-            case 0:
-                return createVerdictMessage(
-                    winner.player,
-                    " wins. - with straight flush: ",
-                    sortedDistinctValues(winner.hand)[0].value
-                );
-            case 1:
-                return winner.player
-                     + " wins. - with four of a kind: "
-                     + valueToName[sortedDistinctValues(winner.hand).find(
-                        count => count.repetitions === 4).value]
-                     + " over "
-                     + valueToName[sortedDistinctValues(winner.hand).find(
-                        count => count.repetitions === 1).value];
-            case 2:
-                return winner.player
-                     + " wins. - with full house: "
-                     + valueToName[sortedDistinctValues(winner.hand).find(
-                        count => count.repetitions === 3).value]
-                     + " over "
-                     + valueToName[sortedDistinctValues(winner.hand).find(
-                        count => count.repetitions === 2).value];
-            case 3:
-                return createVerdictMessage(
-                    winner.player,
-                    " wins. - with flush: ",
-                    sortedDistinctValues(winner.hand)[0].value
-                );
-            case 4:
-                return createVerdictMessage(
-                    winner.player,
-                    " wins. - with straight: ",
-                    sortedDistinctValues(winner.hand)[0].value
-                );
-            case 5:
-                return createVerdictMessage(
-                    winner.player,
-                    " wins. - with three of a kind: ",
-                    sortedDistinctValues(winner.hand).find(
-                        count => count.repetitions === 3).value
-                );
-            case 6:
-                return createVerdictMessage(
-                    winner.player,
-                    " wins. - with two pairs: ",
-                    sortedDistinctValues(winner.hand).find(
-                        count => count.repetitions === 2).value
-                );
-            case 7:
-                return createVerdictMessage(
-                    winner.player,
-                    " wins. - with pair: ",
-                    sortedDistinctValues(winner.hand).find(
-                        count => count.repetitions === 2).value
-                );
-            default:
-                throw new Error("Not covered case (impossible)");
-        }
+        return getHigherRankVerdictMessage(winner, winnerRank);
     }
     else {
-        switch (firstRank) {
-            case 0: // straight flush (both flags work)
-                return untieByhighCard(firstPlayer, secondPlayer, false);
-            case 1: // four of a kind
-                return untieByhighCard(firstPlayer, secondPlayer, true);
-            case 2: // full house
-                return untieByhighCard(firstPlayer, secondPlayer, true);
-            case 3: // flush
-                return untieByhighCard(firstPlayer, secondPlayer, false);
-            case 4: // straight (both flags work)
-                return untieByhighCard(firstPlayer, secondPlayer, false);
-            case 5: // three of a kind
-                return untieByhighCard(firstPlayer, secondPlayer, true);
-            case 6: // two pairs
-                return untieByhighCard(firstPlayer, secondPlayer, true);
-            case 7: // pair
-                return untieByhighCard(firstPlayer, secondPlayer, true);
-            case 8: // high card (both flags work)
-                return untieByhighCard(firstPlayer, secondPlayer, false);
-            default:
-                throw new Error("Not covered case (impossible)");
-        }
+        return getEqualRankVerdictMessage(firstPlayer, secondPlayer, firstRank);
     }
 }
 

@@ -30,7 +30,7 @@ Tie.
 
 function readValue(input) {
     if (!/^[1-9TJQKA]$/.test(input))
-        return undefined;
+        throw new Error("Valor de carta inválido");
         
     switch (input) {
         case "T": return 10;
@@ -46,21 +46,17 @@ function readSuit(input) {
     if (/^[CDHS]$/.test(input))
         return input;
     else
-        return undefined;
+        throw new Error("Palo de carta inválido");
 }
 
 function readCard(input) {
     const splitted = input.split('');
     if (splitted.length !== 2)
-        return undefined;
+        throw new Error("Formato de carta inválido");
 
     const value = readValue(splitted[0]);
-    if (typeof value === "undefined")
-        return undefined;
     
     const suit = readSuit(splitted[1]);
-    if (typeof suit === "undefined")
-        return undefined;
     
     return {
         value,
@@ -71,10 +67,7 @@ function readCard(input) {
 function readHand(input) {
     const splitted = input.split(" ").map(readCard);
     if (splitted.length != 5)
-        return undefined;
-    
-    if (splitted.some(card => typeof card === 'undefined'))
-        return undefined;
+        throw new Error("Formato de mano inválido");
     
     return splitted;
 }
@@ -82,12 +75,10 @@ function readHand(input) {
 function readPlayer(input) {
     const playerAndHand = input.split(": ");
     if (playerAndHand.length != 2)
-        return undefined;
+        throw new Error("Formato de carta y jugador inválido");
 
     const player = playerAndHand[0];
     const hand = readHand(playerAndHand[1]);
-    if (typeof hand === "undefined")
-        return undefined
     
     return {
         player,
@@ -98,10 +89,7 @@ function readPlayer(input) {
 function readGame(input) {
     const players = input.split("  ").map(readPlayer);
     if (players.length != 2)
-        return undefined;
-    
-    if (players.some(player => typeof player === 'undefined'))
-        return undefined;
+        throw new Error("Formato de juego inválido");
     
     return players;
 }
@@ -379,10 +367,7 @@ function decideGame(game) {
 
 function play(pairOfHands) {
     const game = readGame(pairOfHands);
-    if (typeof game === "undefined")
-        console.log("Bad input");
-    else
-        console.log(decideGame(game));
+    console.log(decideGame(game));
 }
 
 play("Black: 2H 3D 5S 9C KD  White: 2C 3H 4S 8C AH");

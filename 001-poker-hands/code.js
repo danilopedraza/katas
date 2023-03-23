@@ -108,7 +108,7 @@ function isStraight(hand) {
         return 0;
 }
 
-function sortedDistinctValues(hand) {
+function sortedDistinctValues(hand, sortByRepsFirst=false) {
     let valuesAndRepetitions = {};
     hand.map(card => card.value).forEach(value => {
         if (value in valuesAndRepetitions)
@@ -124,7 +124,20 @@ function sortedDistinctValues(hand) {
             repetitions: valuesAndRepetitions[value],
         });
     
-    return sorted.sort((a,b)=>b.value-a.value);
+
+    if (sortByRepsFirst)
+        return sorted.sort((a,b) => 
+            b.repetitions-a.repetitions !== 0 ?
+                b.repetitions-a.repetitions :
+                b.value-a.value
+        );
+    else
+        return sorted.sort((a,b) => 
+            b.value-a.value !== 0 ?
+                b.value-a.value :
+                b.repetitions-a.repetitions
+        );
+        
 }
 
 function highCardRank(hand) {
@@ -220,27 +233,15 @@ function isFourOfAKind(hand) {
         return 0;
 }
 
-function untieByhighCard(firstPlayer, secondPlayer, sortByRepsFirst) {
-    const valueToName = [
-        null,
-        '1', '2', '3', '4', '5', '6', '7', '8', '9', '10',
-        "Jack", "Queen", "King", "Ace",
-    ]
+const valueToName = [
+    null,
+    '1', '2', '3', '4', '5', '6', '7', '8', '9', '10',
+    "Jack", "Queen", "King", "Ace",
+]
 
-    let firstSorted = sortedDistinctValues(firstPlayer.hand);
-    let secondSorted = sortedDistinctValues(secondPlayer.hand);
-    if (sortByRepsFirst) {
-        firstSorted.sort((a,b) => 
-            b.repetitions-a.repetitions !== 0 ?
-                b.repetitions-a.repetitions :
-                b.value-a.value
-        );
-        secondSorted.sort((a,b) => 
-        b.repetitions-a.repetitions !== 0 ?
-            b.repetitions-a.repetitions :
-            b.value-a.value
-        );
-    }
+function untieByhighCard(firstPlayer, secondPlayer, sortByRepsFirst) {
+    const firstSorted = sortedDistinctValues(firstPlayer.hand, sortByRepsFirst);
+    const secondSorted = sortedDistinctValues(secondPlayer.hand, sortByRepsFirst);
                 
     for (let i = 0; i < 5; i++)
         if      (firstSorted[i].value > secondSorted[i].value)
@@ -266,12 +267,6 @@ function decideGame(game) {
         isTwoPairs,
         isPair,
         (hand) => true, // for high card
-    ];
-
-    const valueToName = [
-        null,
-        '1', '2', '3', '4', '5', '6', '7', '8', '9', '10',
-        "Jack", "Queen", "King", "Ace",
     ];
 
     const firstPlayer = game[0];

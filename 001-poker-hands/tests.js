@@ -61,16 +61,16 @@ describe("Tests para kata Poker Hands", () => {
             expect(variable).to.equal(14);
         });
         it("Value 10 (illegal argument)", () => {
-            let variable = functions.readValue("10");
-            expect(variable).to.equal(undefined);
+            let variable = () => functions.readValue("10");
+            expect(variable).to.throw();
         });
         it("Empty array", () => {
-            let variable = functions.readValue([]);
-            expect(variable).to.equal(undefined);
+            let variable = () => functions.readValue([]);
+            expect(variable).to.throw();
         });
         it("A valid value with leading spaces", () => {
-            let variable = functions.readValue("  1");
-            expect(variable).to.equal(undefined)
+            let variable = () => functions.readValue("  1");
+            expect(variable).to.throw();
         });
     });
 
@@ -92,12 +92,12 @@ describe("Tests para kata Poker Hands", () => {
             expect(variable).to.equal("S");
         });
         it("A number", () => {
-            let variable = functions.readSuit("23");
-            expect(variable).to.equal(undefined);
+            let variable = () => functions.readSuit("23");
+            expect(variable).to.throw();
         });
         it("Empty array", () => {
-            let variable = functions.readSuit([]);
-            expect(variable).to.equal(undefined);
+            let variable = () => functions.readSuit([]);
+            expect(variable).to.throw();
         });
     });
 
@@ -124,24 +124,24 @@ describe("Tests para kata Poker Hands", () => {
             });
         });
         it("Empty string", () => {
-            let variable = functions.readCard("");
-            expect(variable).to.deep.equal(undefined);
+            let variable = () => functions.readCard("");
+            expect(variable).to.throw();
         });
         it("Large string", () => {
-            let variable = functions.readCard("kskfsl");
-            expect(variable).to.deep.equal(undefined);
+            let variable = () => functions.readCard("kskfsl");
+            expect(variable).to.throw(undefined);
         });
         it("Good length but bad values", () => {
-            let variable = functions.readCard("1K");
-            expect(variable).to.deep.equal(undefined);
+            let variable = () => functions.readCard("1K");
+            expect(variable).to.throw();
         });
         it("Good length but bad values", () => {
-            let variable = functions.readCard("ZH");
-            expect(variable).to.deep.equal(undefined);
+            let variable = () => functions.readCard("ZH");
+            expect(variable).to.throw();
         });
         it("Good length but bad values", () => {
-            let variable = functions.readCard("MM");
-            expect(variable).to.deep.equal(undefined);
+            let variable = () => functions.readCard("MM");
+            expect(variable).to.throw();
         });
     });
 
@@ -159,20 +159,20 @@ describe("Tests para kata Poker Hands", () => {
             );
         });
         it("Value '2H 3D 5S 9C KD  ' (spaces at the end))", () => {
-            let variable = functions.readHand("2H 3D 5S 9C KD  ");
-            expect(variable).to.deep.equal(undefined);
+            let variable = () => functions.readHand("2H 3D 5S 9C KD  ");
+            expect(variable).to.throw();
         });
         it("Value '2H 3D 5S 9C KD 2C' (6 cards))", () => {
-            let variable = functions.readHand("2H 3D 5S 9C KD 2C");
-            expect(variable).to.deep.equal(undefined);
+            let variable = () => functions.readHand("2H 3D 5S 9C KD 2C");
+            expect(variable).to.throw();
         });
         it("Value '2H 3D 5S 9C KY' (with an illegal card))", () => {
-            let variable = functions.readHand("2H 3D 5S 9C KY");
-            expect(variable).to.deep.equal(undefined);
+            let variable = () => functions.readHand("2H 3D 5S 9C KY");
+            expect(variable).to.throw();
         });
         it("Value 'II JJ SS ED KY' (every card is illegal))", () => {
-            let variable = functions.readHand("2H 3D 5S 9C KY");
-            expect(variable).to.deep.equal(undefined);
+            let variable = () => functions.readHand("2H 3D 5S 9C KY");
+            expect(variable).to.throw();
         });
     });
 
@@ -187,16 +187,16 @@ describe("Tests para kata Poker Hands", () => {
             );
         });
         it("Value 'Black: 2H 3D 5S 9C XD' (illegal card)", () => {
-            let variable = functions.readPlayer("Black: 2H 3D 5S 9C XD");
-            expect(variable).to.deep.equal(undefined);
+            let variable = () => functions.readPlayer("Black: 2H 3D 5S 9C XD");
+            expect(variable).to.throw();
         });
         it("Value 'Black: 2H 3D 5S 9C KD  White: 2C 3H 4S 8C AH' (A game instead of just a player)", () => {
-            let variable = functions.readPlayer("Black: 2H 3D 5S 9C KD  White: 2C 3H 4S 8C AH");
-            expect(variable).to.deep.equal(undefined);
+            let variable = () => functions.readPlayer("Black: 2H 3D 5S 9C KD  White: 2C 3H 4S 8C AH");
+            expect(variable).to.throw();
         });
         it("Value 'Black: 2H 3D 5S 9C KD: dd' (Just weird input with a similar problem)", () => {
-            let variable = functions.readPlayer("Black: 2H 3D 5S 9C KD  White: 2C 3H 4S 8C AH");
-            expect(variable).to.deep.equal(undefined);
+            let variable = () => functions.readPlayer("Black: 2H 3D 5S 9C KD  White: 2C 3H 4S 8C AH");
+            expect(variable).to.throw();
         });
     });
 
@@ -211,8 +211,8 @@ describe("Tests para kata Poker Hands", () => {
             );
         });
         it("Game with three players", () => {
-            let variable = functions.readGame("Black: 2H 3D 5S 9C KD  White: 2C 3H 4S 8C AH  Red: 2H 4S 4C 2D 4H");
-            expect(variable).to.deep.equal(undefined);
+            let variable = () => functions.readGame("Black: 2H 3D 5S 9C KD  White: 2C 3H 4S 8C AH  Red: 2H 4S 4C 2D 4H");
+            expect(variable).to.throw();
         });
     });
 

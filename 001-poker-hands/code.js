@@ -239,7 +239,7 @@ const valueToName = [
     "Jack", "Queen", "King", "Ace",
 ];
 
-function verdictMessage(winner, message, value) {
+function createVerdictMessage(winner, message, value) {
     return winner
         + message
         + valueToName[value];
@@ -251,13 +251,13 @@ function untieByhighCard(firstPlayer, secondPlayer, sortByRepsFirst) {
     
     for (let i = 0; i < 5; i++)
         if      (firstSorted[i].value > secondSorted[i].value)
-            return verdictMessage(
+            return createVerdictMessage(
                 firstPlayer.player,
                 " wins. - with high card: ",
                 firstSorted[i].value
             );
         else if (firstSorted[i].value < secondSorted[i].value)
-            return verdictMessage(
+            return createVerdictMessage(
                 secondPlayer.player,
                 " wins. - with high card: ",
                 secondSorted[i].value
@@ -296,7 +296,7 @@ function decideGame(game) {
         
         switch (winnerRank) {
             case 0:
-                return verdictMessage(
+                return createVerdictMessage(
                     winner.player,
                     " wins. - with straight flush: ",
                     sortedDistinctValues(winner.hand)[0].value
@@ -318,33 +318,33 @@ function decideGame(game) {
                      + valueToName[sortedDistinctValues(winner.hand).find(
                         count => count.repetitions === 2).value];
             case 3:
-                return verdictMessage(
+                return createVerdictMessage(
                     winner.player,
                     " wins. - with flush: ",
                     sortedDistinctValues(winner.hand)[0].value
                 );
             case 4:
-                return verdictMessage(
+                return createVerdictMessage(
                     winner.player,
                     " wins. - with straight: ",
                     sortedDistinctValues(winner.hand)[0].value
                 );
             case 5:
-                return verdictMessage(
+                return createVerdictMessage(
                     winner.player,
                     " wins. - with three of a kind: ",
                     sortedDistinctValues(winner.hand).find(
                         count => count.repetitions === 3).value
                 );
             case 6:
-                return verdictMessage(
+                return createVerdictMessage(
                     winner.player,
                     " wins. - with two pairs: ",
                     sortedDistinctValues(winner.hand).find(
                         count => count.repetitions === 2).value
                 );
             case 7:
-                return verdictMessage(
+                return createVerdictMessage(
                     winner.player,
                     " wins. - with pair: ",
                     sortedDistinctValues(winner.hand).find(

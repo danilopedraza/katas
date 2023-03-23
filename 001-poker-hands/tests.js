@@ -304,9 +304,9 @@ describe("Tests para kata Poker Hands", () => {
             );
             expect(actual).to.equal(12);
         });
-        it("AS AS QS QS 1S (1)", () => {
+        it("AS AD QS QH 1S (1)", () => {
             let actual = functionsToTest.highCardRank(
-                functionsToTest.readHand("AS AS QS QS 1S")
+                functionsToTest.readHand("AS AD QS QH 1S")
             );
             expect(actual).to.equal(1);
         });
@@ -355,11 +355,11 @@ describe("Tests para kata Poker Hands", () => {
             );
             expect(actual).to.equal(0);
         });
-        it("AS AS QS QS 1S (flush)", () => {
+        it("AS AD QS QH 1S (not flush)", () => {
             let actual = functionsToTest.isFlush(
-                functionsToTest.readHand("AS AS QS QS 1S")
+                functionsToTest.readHand("AS AD QS QH 1S")
             );
-            expect(actual).to.equal(1);
+            expect(actual).to.equal(0);
         });
     });
 
@@ -406,9 +406,9 @@ describe("Tests para kata Poker Hands", () => {
             );
             expect(actual).to.equal(0);
         });
-        it("AS AS QS QS 1S (not straight flush)", () => {
+        it("AS AD QS QH 1S (not straight flush)", () => {
             let actual = functionsToTest.isStraightFlush(
-                functionsToTest.readHand("AS AS QS QS 1S")
+                functionsToTest.readHand("AS AD QS QH 1S")
             );
             expect(actual).to.equal(0);
         });
@@ -457,9 +457,9 @@ describe("Tests para kata Poker Hands", () => {
             );
             expect(actual).to.equal(0);
         });
-        it("AS AS QS QS 1S (pair)", () => {
+        it("AS AD QS QH 1S (pair)", () => {
             let actual = functionsToTest.isPair(
-                functionsToTest.readHand("AS AS QS QS 1S")
+                functionsToTest.readHand("AS AD QS QH 1S")
             );
             expect(actual).to.equal(14);
         });
@@ -508,9 +508,9 @@ describe("Tests para kata Poker Hands", () => {
             );
             expect(actual).to.equal(0);
         });
-        it("AS AS QS QS 1S (two pairs)", () => {
+        it("AS AD QS QH 1S (two pairs)", () => {
             let actual = functionsToTest.isTwoPairs(
-                functionsToTest.readHand("AS AS QS QS 1S")
+                functionsToTest.readHand("AS AD QS QH 1S")
             );
             expect(actual).to.equal(1);
         });
@@ -559,9 +559,9 @@ describe("Tests para kata Poker Hands", () => {
             );
             expect(actual).to.equal(0);
         });
-        it("AS AS QS QS 1S (not tk)", () => {
+        it("AS AD QS QH 1S (not tk)", () => {
             let actual = functionsToTest.isThreeOfAKind(
-                functionsToTest.readHand("AS AS QS QS 1S")
+                functionsToTest.readHand("AS AD QS QH 1S")
             );
             expect(actual).to.equal(0);
         });
@@ -610,9 +610,9 @@ describe("Tests para kata Poker Hands", () => {
             );
             expect(actual).to.equal(0);
         });
-        it("AS AS QS QS 1S (not fh)", () => {
+        it("AS AD QS QH 1S (not fh)", () => {
             let actual = functionsToTest.isFullHouse(
-                functionsToTest.readHand("AS AS QS QS 1S")
+                functionsToTest.readHand("AS AD QS QH 1S")
             );
             expect(actual).to.equal(0);
         });

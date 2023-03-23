@@ -370,10 +370,10 @@ function decideGame(game) {
     const secondPlayer = game[1];
 
     const firstRank = combinations.findIndex(
-        func => func(firstPlayer.hand)
+        func => func(firstPlayer.hand) !== 0
     );
     const secondRank = combinations.findIndex(
-        func => func(secondPlayer.hand)
+        func => func(secondPlayer.hand) !== 0
     );
 
     if (firstRank !== secondRank) {

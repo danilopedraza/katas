@@ -117,22 +117,22 @@ function sortedDistinctValues(hand, sortByRepsFirst=false) {
             valuesAndRepetitions[value] = 1;
     });
 
-    let sorted = [];
+    let unsorted = [];
     for (const value in valuesAndRepetitions)
-        sorted.push({
+        unsorted.push({
             value: parseInt(value),
             repetitions: valuesAndRepetitions[value],
         });
     
 
     if (sortByRepsFirst)
-        return sorted.sort((a,b) => 
+        return unsorted.sort((a,b) =>
             b.repetitions-a.repetitions !== 0 ?
                 b.repetitions-a.repetitions :
                 b.value-a.value
         );
     else
-        return sorted.sort((a,b) => 
+        return unsorted.sort((a,b) => 
             b.value-a.value !== 0 ?
                 b.value-a.value :
                 b.repetitions-a.repetitions

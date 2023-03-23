@@ -216,45 +216,45 @@ describe("Tests para kata Poker Hands", () => {
         });
     });
 
-    describe("isStraight", () => {
+    describe("getStraightScore", () => {
         it("2H 3D 5S 9C KD (not straight)", () => {
-            let actual = functionsToTest.isStraight(
+            let actual = functionsToTest.getStraightScore(
                 functionsToTest.readHand("2H 3D 5S 9C KD")
             );
             expect(actual).to.equal(0);
         });
         it("2C 3H 4S 8C AH (not straight)", () => {
-            let actual = functionsToTest.isStraight(
+            let actual = functionsToTest.getStraightScore(
                 functionsToTest.readHand("2C 3H 4S 8C AH")
             );
             expect(actual).to.equal(0);
         });
         it("2H 4S 4C 2D 4H (not straight)", () => {
-            let actual = functionsToTest.isStraight(
+            let actual = functionsToTest.getStraightScore(
                 functionsToTest.readHand("2H 4S 4C 2D 4H")
             );
             expect(actual).to.equal(0);
         });
         it("2S 8S AS QS 3S (not straight)", () => {
-            let actual = functionsToTest.isStraight(
+            let actual = functionsToTest.getStraightScore(
                 functionsToTest.readHand("2S 8S AS QS 3S")
             );
             expect(actual).to.equal(0);
         });
         it("AS KS QS JS TS (straight)", () => {
-            let actual = functionsToTest.isStraight(
+            let actual = functionsToTest.getStraightScore(
                 functionsToTest.readHand("AS KS QS JS TS")
             );
             expect(actual).to.equal(14);
         });
         it("1C 4D 2H 3S 5S (straight)", () => {
-            let actual = functionsToTest.isStraight(
+            let actual = functionsToTest.getStraightScore(
                 functionsToTest.readHand("1C 4D 2H 3S 5S")
             );
             expect(actual).to.equal(5);
         });
         it("8C 9D TH JS QS (straight)", () => {
-            let actual = functionsToTest.isStraight(
+            let actual = functionsToTest.getStraightScore(
                 functionsToTest.readHand("8C 9D TH JS QS")
             );
             expect(actual).to.equal(12);
@@ -312,321 +312,321 @@ describe("Tests para kata Poker Hands", () => {
         });
     });
 
-    describe("isFlush", () => {
+    describe("getFlushScore", () => {
         it("2H 3D 5S 9C KD (not flush)", () => {
-            let actual = functionsToTest.isFlush(
+            let actual = functionsToTest.getFlushScore(
                 functionsToTest.readHand("2H 3D 5S 9C KD")
             );
             expect(actual).to.equal(0);
         });
         it("2C 3H 4S 8C AH (not flush)", () => {
-            let actual = functionsToTest.isFlush(
+            let actual = functionsToTest.getFlushScore(
                 functionsToTest.readHand("2C 3H 4S 8C AH")
             );
             expect(actual).to.equal(0);
         });
         it("2H 4S 4C 2D 4H (not flush)", () => {
-            let actual = functionsToTest.isFlush(
+            let actual = functionsToTest.getFlushScore(
                 functionsToTest.readHand("2H 4S 4C 2D 4H")
             );
             expect(actual).to.equal(0);
         });
         it("2S 8S AS QS 3S (flush)", () => {
-            let actual = functionsToTest.isFlush(
+            let actual = functionsToTest.getFlushScore(
                 functionsToTest.readHand("2S 8S AS QS 3S")
             );
             expect(actual).to.equal(14);
         });
         it("AS KS QS JS TS (flush)", () => {
-            let actual = functionsToTest.isFlush(
+            let actual = functionsToTest.getFlushScore(
                 functionsToTest.readHand("AS KS QS JS TS")
             );
             expect(actual).to.equal(14);
         });
         it("1C 4D 2H 3S 5S (not flush)", () => {
-            let actual = functionsToTest.isFlush(
+            let actual = functionsToTest.getFlushScore(
                 functionsToTest.readHand("1C 4D 2H 3S 5S")
             );
             expect(actual).to.equal(0);
         });
         it("8C 9D TH JS QS (not flush)", () => {
-            let actual = functionsToTest.isFlush(
+            let actual = functionsToTest.getFlushScore(
                 functionsToTest.readHand("8C 9D TH JS QS")
             );
             expect(actual).to.equal(0);
         });
         it("AS AD QS QH 1S (not flush)", () => {
-            let actual = functionsToTest.isFlush(
+            let actual = functionsToTest.getFlushScore(
                 functionsToTest.readHand("AS AD QS QH 1S")
             );
             expect(actual).to.equal(0);
         });
     });
 
-    describe("isStraightFlush", () => {
+    describe("getStraightFlushScore", () => {
         it("2H 3D 5S 9C KD (not straight flush)", () => {
-            let actual = functionsToTest.isStraightFlush(
+            let actual = functionsToTest.getStraightFlushScore(
                 functionsToTest.readHand("2H 3D 5S 9C KD")
             );
             expect(actual).to.equal(0);
         });
         it("2C 3H 4S 8C AH (not straight flush)", () => {
-            let actual = functionsToTest.isStraightFlush(
+            let actual = functionsToTest.getStraightFlushScore(
                 functionsToTest.readHand("2C 3H 4S 8C AH")
             );
             expect(actual).to.equal(0);
         });
         it("2H 4S 4C 2D 4H (not straight flush)", () => {
-            let actual = functionsToTest.isStraightFlush(
+            let actual = functionsToTest.getStraightFlushScore(
                 functionsToTest.readHand("2H 4S 4C 2D 4H")
             );
             expect(actual).to.equal(0);
         });
         it("2S 8S AS QS 3S (not straight flush)", () => {
-            let actual = functionsToTest.isStraightFlush(
+            let actual = functionsToTest.getStraightFlushScore(
                 functionsToTest.readHand("2S 8S AS QS 3S")
             );
             expect(actual).to.equal(0);
         });
         it("AS KS QS JS TS (straight flush)", () => {
-            let actual = functionsToTest.isStraightFlush(
+            let actual = functionsToTest.getStraightFlushScore(
                 functionsToTest.readHand("AS KS QS JS TS")
             );
             expect(actual).to.equal(14);
         });
         it("1C 4D 2H 3S 5S (not straight flush)", () => {
-            let actual = functionsToTest.isStraightFlush(
+            let actual = functionsToTest.getStraightFlushScore(
                 functionsToTest.readHand("1C 4D 2H 3S 5S")
             );
             expect(actual).to.equal(0);
         });
         it("8C 9D TH JS QS (not straight flush)", () => {
-            let actual = functionsToTest.isStraightFlush(
+            let actual = functionsToTest.getStraightFlushScore(
                 functionsToTest.readHand("8C 9D TH JS QS")
             );
             expect(actual).to.equal(0);
         });
         it("AS AD QS QH 1S (not straight flush)", () => {
-            let actual = functionsToTest.isStraightFlush(
+            let actual = functionsToTest.getStraightFlushScore(
                 functionsToTest.readHand("AS AD QS QH 1S")
             );
             expect(actual).to.equal(0);
         });
     });
 
-    describe("isPair", () => {
+    describe("getPairScore", () => {
         it("2H 3D 5S 9C KD (not pair)", () => {
-            let actual = functionsToTest.isPair(
+            let actual = functionsToTest.getPairScore(
                 functionsToTest.readHand("2H 3D 5S 9C KD")
             );
             expect(actual).to.equal(0);
         });
         it("2C 3H 4S 8C AH (not pair)", () => {
-            let actual = functionsToTest.isPair(
+            let actual = functionsToTest.getPairScore(
                 functionsToTest.readHand("2C 3H 4S 8C AH")
             );
             expect(actual).to.equal(0);
         });
         it("2H 4S 4C 2D 4H (pair)", () => {
-            let actual = functionsToTest.isPair(
+            let actual = functionsToTest.getPairScore(
                 functionsToTest.readHand("2H 4S 4C 2D 4H")
             );
             expect(actual).to.equal(2);
         });
         it("2S 8S AS QS 3S (not pair)", () => {
-            let actual = functionsToTest.isPair(
+            let actual = functionsToTest.getPairScore(
                 functionsToTest.readHand("2S 8S AS QS 3S")
             );
             expect(actual).to.equal(0);
         });
         it("AS KS QS JS TS (not pair)", () => {
-            let actual = functionsToTest.isPair(
+            let actual = functionsToTest.getPairScore(
                 functionsToTest.readHand("AS KS QS JS TS")
             );
             expect(actual).to.equal(0);
         });
         it("1C 4D 2H 3S 5S (not pair)", () => {
-            let actual = functionsToTest.isPair(
+            let actual = functionsToTest.getPairScore(
                 functionsToTest.readHand("1C 4D 2H 3S 5S")
             );
             expect(actual).to.equal(0);
         });
         it("8C 9D TH JS QS (not pair)", () => {
-            let actual = functionsToTest.isPair(
+            let actual = functionsToTest.getPairScore(
                 functionsToTest.readHand("8C 9D TH JS QS")
             );
             expect(actual).to.equal(0);
         });
         it("AS AD QS QH 1S (pair)", () => {
-            let actual = functionsToTest.isPair(
+            let actual = functionsToTest.getPairScore(
                 functionsToTest.readHand("AS AD QS QH 1S")
             );
             expect(actual).to.equal(14);
         });
     });
 
-    describe("isTwoPairs", () => {
+    describe("getTwoPairsScore", () => {
         it("2H 3D 5S 9C KD (not two pairs)", () => {
-            let actual = functionsToTest.isTwoPairs(
+            let actual = functionsToTest.getTwoPairsScore(
                 functionsToTest.readHand("2H 3D 5S 9C KD")
             );
             expect(actual).to.equal(0);
         });
         it("2C 3H 4S 8C AH (not two pairs)", () => {
-            let actual = functionsToTest.isTwoPairs(
+            let actual = functionsToTest.getTwoPairsScore(
                 functionsToTest.readHand("2C 3H 4S 8C AH")
             );
             expect(actual).to.equal(0);
         });
         it("2H 4S 4C 2D 4H (not two pairs)", () => {
-            let actual = functionsToTest.isTwoPairs(
+            let actual = functionsToTest.getTwoPairsScore(
                 functionsToTest.readHand("2H 4S 4C 2D 4H")
             );
             expect(actual).to.equal(0);
         });
         it("2S 8S AS QS 3S (not two pairs)", () => {
-            let actual = functionsToTest.isTwoPairs(
+            let actual = functionsToTest.getTwoPairsScore(
                 functionsToTest.readHand("2S 8S AS QS 3S")
             );
             expect(actual).to.equal(0);
         });
         it("AS KS QS JS TS (not two pairs)", () => {
-            let actual = functionsToTest.isTwoPairs(
+            let actual = functionsToTest.getTwoPairsScore(
                 functionsToTest.readHand("AS KS QS JS TS")
             );
             expect(actual).to.equal(0);
         });
         it("1C 4D 2H 3S 5S (not two pairs)", () => {
-            let actual = functionsToTest.isTwoPairs(
+            let actual = functionsToTest.getTwoPairsScore(
                 functionsToTest.readHand("1C 4D 2H 3S 5S")
             );
             expect(actual).to.equal(0);
         });
         it("8C 9D TH JS QS (not two pairs)", () => {
-            let actual = functionsToTest.isTwoPairs(
+            let actual = functionsToTest.getTwoPairsScore(
                 functionsToTest.readHand("8C 9D TH JS QS")
             );
             expect(actual).to.equal(0);
         });
         it("AS AD QS QH 1S (two pairs)", () => {
-            let actual = functionsToTest.isTwoPairs(
+            let actual = functionsToTest.getTwoPairsScore(
                 functionsToTest.readHand("AS AD QS QH 1S")
             );
             expect(actual).to.equal(1);
         });
     });
 
-    describe("isThreeOfAKind", () => {
+    describe("getThreeOfAKindScore", () => {
         it("2H 3D 5S 9C KD (not tk)", () => {
-            let actual = functionsToTest.isThreeOfAKind(
+            let actual = functionsToTest.getThreeOfAKindScore(
                 functionsToTest.readHand("2H 3D 5S 9C KD")
             );
             expect(actual).to.equal(0);
         });
         it("2C 3H 4S 8C AH (not tk)", () => {
-            let actual = functionsToTest.isThreeOfAKind(
+            let actual = functionsToTest.getThreeOfAKindScore(
                 functionsToTest.readHand("2C 3H 4S 8C AH")
             );
             expect(actual).to.equal(0);
         });
         it("2H 4S 4C 2D 4H (tk)", () => {
-            let actual = functionsToTest.isThreeOfAKind(
+            let actual = functionsToTest.getThreeOfAKindScore(
                 functionsToTest.readHand("2H 4S 4C 2D 4H")
             );
             expect(actual).to.equal(4);
         });
         it("2S 8S AS QS 3S (not tk)", () => {
-            let actual = functionsToTest.isThreeOfAKind(
+            let actual = functionsToTest.getThreeOfAKindScore(
                 functionsToTest.readHand("2S 8S AS QS 3S")
             );
             expect(actual).to.equal(0);
         });
         it("AS KS QS JS TS (not tk)", () => {
-            let actual = functionsToTest.isThreeOfAKind(
+            let actual = functionsToTest.getThreeOfAKindScore(
                 functionsToTest.readHand("AS KS QS JS TS")
             );
             expect(actual).to.equal(0);
         });
         it("1C 4D 2H 3S 5S (not tk)", () => {
-            let actual = functionsToTest.isThreeOfAKind(
+            let actual = functionsToTest.getThreeOfAKindScore(
                 functionsToTest.readHand("1C 4D 2H 3S 5S")
             );
             expect(actual).to.equal(0);
         });
         it("8C 9D TH JS QS (not tk)", () => {
-            let actual = functionsToTest.isThreeOfAKind(
+            let actual = functionsToTest.getThreeOfAKindScore(
                 functionsToTest.readHand("8C 9D TH JS QS")
             );
             expect(actual).to.equal(0);
         });
         it("AS AD QS QH 1S (not tk)", () => {
-            let actual = functionsToTest.isThreeOfAKind(
+            let actual = functionsToTest.getThreeOfAKindScore(
                 functionsToTest.readHand("AS AD QS QH 1S")
             );
             expect(actual).to.equal(0);
         });
     });
 
-    describe("isFullHouse", () => {
+    describe("getFullHouseScore", () => {
         it("2H 3D 5S 9C KD (not fh)", () => {
-            let actual = functionsToTest.isFullHouse(
+            let actual = functionsToTest.getFullHouseScore(
                 functionsToTest.readHand("2H 3D 5S 9C KD")
             );
             expect(actual).to.equal(0);
         });
         it("2C 3H 4S 8C AH (not fh)", () => {
-            let actual = functionsToTest.isFullHouse(
+            let actual = functionsToTest.getFullHouseScore(
                 functionsToTest.readHand("2C 3H 4S 8C AH")
             );
             expect(actual).to.equal(0);
         });
         it("2H 4S 4C 2D 4H (fh)", () => {
-            let actual = functionsToTest.isFullHouse(
+            let actual = functionsToTest.getFullHouseScore(
                 functionsToTest.readHand("2H 4S 4C 2D 4H")
             );
             expect(actual).to.equal(4);
         });
         it("2S 8S AS QS 3S (not fh)", () => {
-            let actual = functionsToTest.isFullHouse(
+            let actual = functionsToTest.getFullHouseScore(
                 functionsToTest.readHand("2S 8S AS QS 3S")
             );
             expect(actual).to.equal(0);
         });
         it("AS KS QS JS TS (not fh)", () => {
-            let actual = functionsToTest.isFullHouse(
+            let actual = functionsToTest.getFullHouseScore(
                 functionsToTest.readHand("AS KS QS JS TS")
             );
             expect(actual).to.equal(0);
         });
         it("1C 4D 2H 3S 5S (not fh)", () => {
-            let actual = functionsToTest.isFullHouse(
+            let actual = functionsToTest.getFullHouseScore(
                 functionsToTest.readHand("1C 4D 2H 3S 5S")
             );
             expect(actual).to.equal(0);
         });
         it("8C 9D TH JS QS (not fh)", () => {
-            let actual = functionsToTest.isFullHouse(
+            let actual = functionsToTest.getFullHouseScore(
                 functionsToTest.readHand("8C 9D TH JS QS")
             );
             expect(actual).to.equal(0);
         });
         it("AS AD QS QH 1S (not fh)", () => {
-            let actual = functionsToTest.isFullHouse(
+            let actual = functionsToTest.getFullHouseScore(
                 functionsToTest.readHand("AS AD QS QH 1S")
             );
             expect(actual).to.equal(0);
         });
     });
 
-    describe("isFourOfAKind", () => {
+    describe("getFourOfAKindScore", () => {
         it("AC AD AH AH 1S (4k)", () => {
-            let actual = functionsToTest.isFourOfAKind(
+            let actual = functionsToTest.getFourOfAKindScore(
                 functionsToTest.readHand("AC AD AH AH 1S")
             );
             expect(actual).to.equal(14);
         });
         it("2C AD AH AH 1S (not 4k)", () => {
-            let actual = functionsToTest.isFourOfAKind(
+            let actual = functionsToTest.getFourOfAKindScore(
                 functionsToTest.readHand("2C AD AH AH 1S")
             );
             expect(actual).to.equal(0);

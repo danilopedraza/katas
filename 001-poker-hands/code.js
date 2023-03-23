@@ -94,7 +94,7 @@ function readGame(input) {
     return players;
 }
 
-function isStraight(hand) {
+function getStraightScore(hand) {
     const sortedValues = hand.map(
         card => card.value
     ).sort((a,b) => a-b);
@@ -153,7 +153,7 @@ function highCardRank(hand) {
         return sorted.pop().value;
 }
 
-function isFlush(hand) {
+function getFlushScore(hand) {
     const differentSuits = new Set(hand.map(card => card.suit));
 
     if (differentSuits.size === 1)
@@ -162,16 +162,16 @@ function isFlush(hand) {
         return 0;
 }
 
-function isStraightFlush(hand) {
-    const straight = isStraight(hand);
-    const flush = isFlush(hand);
+function getStraightFlushScore(hand) {
+    const straight = getStraightScore(hand);
+    const flush = getFlushScore(hand);
     if (straight && flush)
         return straight;
     else
         return 0;
 }
 
-function isPair(hand) {
+function getPairScore(hand) {
     const distinct = sortedDistinctValues(hand);
 
     const firstPair = distinct.find(
@@ -184,7 +184,7 @@ function isPair(hand) {
         return 0;
 }
 
-function isTwoPairs(hand) {
+function getTwoPairsScore(hand) {
     const distinct = sortedDistinctValues(hand);
     const pairs = distinct.reduce(
         (acc, cur) => acc + (cur.repetitions === 2? 1 : 0),
@@ -199,7 +199,7 @@ function isTwoPairs(hand) {
         return 0;
 }
 
-function isThreeOfAKind(hand) {
+function getThreeOfAKindScore(hand) {
     const distinct = sortedDistinctValues(hand);
     const triad = distinct.find(
         count => count.repetitions === 3
@@ -211,9 +211,9 @@ function isThreeOfAKind(hand) {
         return 0;
 }
 
-function isFullHouse(hand) {
-    const triadValue = isThreeOfAKind(hand);
-    const pairValue = isPair(hand);
+function getFullHouseScore(hand) {
+    const triadValue = getThreeOfAKindScore(hand);
+    const pairValue = getPairScore(hand);
     
     if (triadValue && pairValue)
         return triadValue;
@@ -221,7 +221,7 @@ function isFullHouse(hand) {
         return 0;
 }
 
-function isFourOfAKind(hand) {
+function getFourOfAKindScore(hand) {
     const distinct = sortedDistinctValues(hand);
     const four = distinct.find(
         count => count.repetitions === 4
@@ -355,14 +355,14 @@ function getEqualRankVerdictMessage(firstPlayer, secondPlayer, rank) {
 
 function decideGame(game) {
     const combinations = [
-        isStraightFlush,
-        isFourOfAKind,
-        isFullHouse,
-        isFlush,
-        isStraight,
-        isThreeOfAKind,
-        isTwoPairs,
-        isPair,
+        getStraightFlushScore,
+        getFourOfAKindScore,
+        getFullHouseScore,
+        getFlushScore,
+        getStraightScore,
+        getThreeOfAKindScore,
+        getTwoPairsScore,
+        getPairScore,
         (hand) => true, // for high card
     ];
 
@@ -411,15 +411,15 @@ const functionsToTest = {
     readPlayer,
     readGame,
     // game logic functions
-    isStraight,
+    getStraightScore,
     highCardRank,
-    isFlush,
-    isStraightFlush,
-    isPair,
-    isTwoPairs,
-    isThreeOfAKind,
-    isFullHouse,
-    isFourOfAKind,
+    getFlushScore,
+    getStraightFlushScore,
+    getPairScore,
+    getTwoPairsScore,
+    getThreeOfAKindScore,
+    getFullHouseScore,
+    getFourOfAKindScore,
     decideGame,
 };
 

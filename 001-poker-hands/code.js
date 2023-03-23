@@ -134,7 +134,7 @@ function highCardRank(hand) {
         count => count.repetitions === 1
     );
 
-    if (typeof firstWithOneCard !== 'undefined')
+    if (firstWithOneCard)
         return firstWithOneCard.value;
     else
         return sorted.pop().value;
@@ -165,7 +165,7 @@ function isPair(hand) {
         count => count.repetitions === 2
     );
 
-    if (typeof firstPair !== 'undefined')
+    if (firstPair)
         return firstPair.value;
     else
         return 0;
@@ -192,7 +192,7 @@ function isThreeOfAKind(hand) {
         count => count.repetitions === 3
     );
 
-    if (typeof triad !== 'undefined')
+    if (triad)
         return triad.value;
     else
         return 0;
@@ -214,7 +214,7 @@ function isFourOfAKind(hand) {
         count => count.repetitions === 4
     );
 
-    if (typeof four !== 'undefined')
+    if (four)
         return four.value;
     else
         return 0;

@@ -30,8 +30,8 @@ Tie.
 
 function readValue(input) {
     if (!/^[1-9TJQKA]$/.test(input))
-        throw new Error("Valor de carta inválido");
-        
+        throw new Error("Invalid card value");
+    
     switch (input) {
         case "T": return 10;
         case "J": return 11;
@@ -46,13 +46,13 @@ function readSuit(input) {
     if (/^[CDHS]$/.test(input))
         return input;
     else
-        throw new Error("Palo de carta inválido");
+        throw new Error("Invalid card suit");
 }
 
 function readCard(input) {
     const splitted = input.split('');
     if (splitted.length !== 2)
-        throw new Error("Formato de carta inválido");
+        throw new Error("Invalid cart format");
 
     const value = readValue(splitted[0]);
     
@@ -67,7 +67,7 @@ function readCard(input) {
 function readHand(input) {
     const splitted = input.split(" ").map(readCard);
     if (splitted.length != 5)
-        throw new Error("Formato de mano inválido");
+        throw new Error("Invalid hand format");
     
     return splitted;
 }
@@ -75,7 +75,7 @@ function readHand(input) {
 function readPlayer(input) {
     const playerAndHand = input.split(": ");
     if (playerAndHand.length != 2)
-        throw new Error("Formato de carta y jugador inválido");
+        throw new Error("Invalid hand and player format");
 
     const player = playerAndHand[0];
     const hand = readHand(playerAndHand[1]);
@@ -89,7 +89,7 @@ function readPlayer(input) {
 function readGame(input) {
     const players = input.split("  ").map(readPlayer);
     if (players.length != 2)
-        throw new Error("Formato de juego inválido");
+        throw new Error("Invalid game format");
     
     return players;
 }
@@ -272,7 +272,7 @@ function decideGame(game) {
         null,
         '1', '2', '3', '4', '5', '6', '7', '8', '9', '10',
         "Jack", "Queen", "King", "Ace",
-    ]
+    ];
 
     const firstPlayer = game[0];
     const secondPlayer = game[1];

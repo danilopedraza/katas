@@ -165,7 +165,7 @@ function getFlushScore(hand) {
 function getStraightFlushScore(hand) {
     const straight = getStraightScore(hand);
     const flush = getFlushScore(hand);
-    if (straight && flush)
+    if (straight !== 0 && flush !== 0)
         return straight;
     else
         return 0;
@@ -215,7 +215,7 @@ function getFullHouseScore(hand) {
     const triadValue = getThreeOfAKindScore(hand);
     const pairValue = getPairScore(hand);
     
-    if (triadValue && pairValue)
+    if (triadValue !== 0 && pairValue !== 0)
         return triadValue;
     else
         return 0;

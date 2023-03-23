@@ -50,7 +50,7 @@ function readSuit(input) {
 }
 
 function readCard(input) {
-    const splitted = input.split('');
+    const splitted = input.split("");
     if (splitted.length !== 2)
         throw new Error("Invalid cart format");
 
@@ -235,7 +235,7 @@ function getFourOfAKindScore(hand) {
 
 const valueToName = [
     null,
-    '1', '2', '3', '4', '5', '6', '7', '8', '9', '10',
+    "1", "2", "3", "4", "5", "6", "7", "8", "9", "10",
     "Jack", "Queen", "King", "Ace",
 ];
 

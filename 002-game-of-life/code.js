@@ -1,3 +1,5 @@
+// business logic functions
+
 function getAllNeighbors(row, column, height, width) {
     const potentialNeighbors = [
         {row: row-1, column: column  },
@@ -63,6 +65,35 @@ function nextGrid(currentGrid) {
     return newGrid;
 }
 
+// input parsing functions
+
+function parseGeneration(inputLine) {
+    if (!/^Generation [1-9][0-9]*:$/.test(inputLine))
+        throw new Error("Invalid first line format");
+
+    return parseInt(inputLine.match(/[0-9]+/));
+}
+
+function parseDimensions(inputLine) {
+    if (!/^[1-9][0-9]* [1-9][0-9]*$/.test(inputLine))
+        throw new Error("Invalid second line format");
+
+    const splitted = inputLine.split(" ");
+    return {
+        height: parseInt(splitted[0]),
+        width: parseInt(splitted[1]),
+    };
+}
+
+function parseGrid(input) {
+    return [[false, false,]];
+}
+
 export {
+    // business logic
     nextGrid,
+    // input parsing
+    parseGeneration,
+    parseDimensions,
+    parseGrid,
 }

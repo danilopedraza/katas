@@ -5,7 +5,7 @@ import * as functionsToTest from "./code";
 describe("Tests for 'Game of life' kata", () => {
     describe("Tests for getting the next state of a grid", () => {
         describe(`Gets an array of booleans and returns
-        another array of booleans representing the next state (always in a 3x3 grid)`, () => {
+another array of booleans representing the next state (always in a 3x3 grid)`, () => {
             it("Array with only dead cells", () => {
                 const currentGrid = [
                     [false, false, false,],
@@ -186,6 +186,69 @@ describe("Tests for 'Game of life' kata", () => {
                 ];
     
                 expect(functionsToTest.nextGrid(currentGrid)).to.deep.equal(expectedNextGrid);
+            });
+        });
+    });
+
+    describe("Tests for parsing the input", () => {
+        describe("Gets a line like 'Generation n:' and return n, where n is a number", () => {
+            it("The line of the example case", () => {
+                const firstLineOfInput = "Generation 1:";
+                const expectedNumber = 1;
+                expect(functionsToTest.parseGeneration(firstLineOfInput)).to.equal(expectedNumber);
+            });
+
+            it("The same line but with a 2", () => {
+                const firstLineOfInput = "Generation 2:";
+                const expectedNumber = 2;
+                expect(functionsToTest.parseGeneration(firstLineOfInput)).to.equal(expectedNumber);
+            });
+
+            it("The same line but with a 12", () => {
+                const firstLineOfInput = "Generation 12:";
+                const expectedNumber = 12;
+                expect(functionsToTest.parseGeneration(firstLineOfInput)).to.equal(expectedNumber);
+            });
+
+            it("The same line but with a 012 (I don't want leading zeros)", () => {
+                const firstLineOfInput = "Generation 012:";
+                expect(() => functionsToTest.parseGeneration(firstLineOfInput)).to.throw();
+            });
+
+            it("A line different from the format", () => {
+                const firstLineOfInput = "Geneation 1 :";
+                expect(() => functionsToTest.parseGeneration(firstLineOfInput)).to.throw();
+            });
+        });
+
+        describe("Gets a line with two numbers separated by a space and returns an object with the two numbers tagged as 'width' and 'height' respectively", () => {
+            it("A line with two digits: '1 1'", () => {
+                const secondLineOfInput = "1 1";
+                const expectedDims = {height: 1, width: 1};
+
+                expect(functionsToTest.parseDimensions(secondLineOfInput)).to.deep.equal(expectedDims);
+            });
+
+            it("A line with two digits: '1 2'", () => {
+                const secondLineOfInput = "1 2";
+                const expectedDims = {height: 1, width: 2};
+
+                expect(functionsToTest.parseDimensions(secondLineOfInput)).to.deep.equal(expectedDims);
+            });
+
+            it("Bad format: '012-25' This test is an excuse to introduce a tougher verification of the input", () => {
+                const secondLineOfInput = "012-25";
+
+                expect(() => functionsToTest.parseDimensions(secondLineOfInput)).to.throw();
+            });
+        });
+
+        describe("Gets an array of strings with the characters '.' and '*', returns the correspondent boolean array", () => {
+            it("An array of one element: the string '..'", () => {
+                const input = [".."];
+                const expectedGrid = [[false, false,]];
+
+                expect(functionsToTest.parseGrid(input)).to.deep.equal(expectedGrid);
             });
         });
     });

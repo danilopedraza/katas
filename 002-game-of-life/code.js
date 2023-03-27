@@ -30,10 +30,6 @@ function numberOfAliveNeighbors(row, column, grid) {
     );
 }
 
-function newEmptyGrid(height, width) {
-    return Array(height).fill().map(()=>Array(width).fill());
-}
-
 function cellNewState(alive, aliveNeighbors) {
     if ((aliveNeighbors === 2 || aliveNeighbors === 3) && alive)
         return true;
@@ -47,22 +43,22 @@ function nextGrid(currentGrid) {
     const height = currentGrid.length;
     const width = currentGrid[0].length;
 
-    let newGrid = newEmptyGrid(height, width);
+    const newGrid = Array(height).fill().map(
+        (row, rowIndex) => Array(width).fill().map(
+            (cell, columnIndex) => {
+                const aliveNeighbors = numberOfAliveNeighbors(
+                    rowIndex,
+                    columnIndex,
+                    currentGrid
+                );
 
-    currentGrid.forEach((row, rowIndex) => {
-        row.forEach((cell, columnIndex) => {
-            const aliveNeighbors = numberOfAliveNeighbors(
-                rowIndex,
-                columnIndex,
-                currentGrid
-            );
-
-            newGrid[rowIndex][columnIndex] = cellNewState(
-                cell,
-                aliveNeighbors    
-            );
-        });
-    });
+                return cellNewState(
+                    currentGrid[rowIndex][columnIndex],
+                    aliveNeighbors
+                );
+            }
+        )
+    );
 
     return newGrid;
 }

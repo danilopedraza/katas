@@ -85,9 +85,39 @@ function parseDimensions(inputLine) {
     };
 }
 
-function parseGrid(input) {
-    return [[false, false,]];
+function parseGrid(rows) {
+    return rows.map(parseRow);
 }
+
+function parseRow(row) {
+    const splitted = row.split("");
+    return splitted.map(cell => cell === "*");
+}
+
+function parseInput(input) {
+    const splitted = input.split("\n");
+
+    const generationNumber = parseGeneration(splitted[0]);
+    const dimensions = parseDimensions(splitted[1]);
+    const grid = parseGrid(splitted.slice(2))
+
+
+    return {
+        generationNumber,
+        dimensions,
+        grid,
+    };
+}
+
+function gameOfLifeIteration(currentState) {
+    return {
+        generationNumber: currentState.generationNumber + 1,
+        dimensions: currentState.dimensions,
+        grid: nextGrid(currentState.grid),
+    };
+}
+
+// the functions called by the tests
 
 export {
     // business logic

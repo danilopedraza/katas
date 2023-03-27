@@ -250,6 +250,33 @@ another array of booleans representing the next state (always in a 3x3 grid)`, (
 
                 expect(functionsToTest.parseGrid(input)).to.deep.equal(expectedGrid);
             });
+
+            it("An array of two elements: '..' and '*.'", () => {
+                const input = ["..", "*."];
+                const expectedGrid = [
+                    [false, false,],
+                    [true , false,],
+                ];
+
+                expect(functionsToTest.parseGrid(input)).to.deep.equal(expectedGrid);
+            });
+
+            it("The array of the example case", () => {
+                const input = [
+                    "........",
+                    "....*...",
+                    "...**...",
+                    "........",
+                ];
+                const expectedGrid = [
+                    [false, false, false, false, false, false, false, false,],
+                    [false, false, false, false, true , false, false, false,],
+                    [false, false, false, true , true , false, false, false,],
+                    [false, false, false, false, false, false, false, false,],
+                ];
+
+                expect(functionsToTest.parseGrid(input)).to.deep.equal(expectedGrid);
+            });
         });
     });
 });

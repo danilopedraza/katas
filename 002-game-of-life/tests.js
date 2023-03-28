@@ -187,6 +187,48 @@ another array of booleans representing the next state (always in a 3x3 grid)`, (
     
                 expect(functionsToTest.nextGrid(currentGrid)).to.deep.equal(expectedNextGrid);
             });
+
+            it("A still life: the 'bee hive'", () => {
+                const currentGrid = [
+                    [false, false, false, false, false, false,],
+                    [false, false, true , true , false, false,],
+                    [false, true , false, false, true , false,],
+                    [false, false, true , true , false, false,],
+                    [false, false, false, false, false, false,],
+                ];
+    
+                const expectedNextGrid =[
+                    [false, false, false, false, false, false,],
+                    [false, false, true , true , false, false,],
+                    [false, true , false, false, true , false,],
+                    [false, false, true , true , false, false,],
+                    [false, false, false, false, false, false,],
+                ];
+    
+                expect(functionsToTest.nextGrid(currentGrid)).to.deep.equal(expectedNextGrid);
+            });
+
+            it("An oscillator of period 2: the 'toad'", () => {
+                const currentGrid = [
+                    [false, false, false, false, false, false,],
+                    [false, false, false, false, false, false,],
+                    [false, false, true , true , true , false,],
+                    [false, true , true , true , false, false,],
+                    [false, false, false, false, false, false,],
+                    [false, false, false, false, false, false,],
+                ];
+    
+                const expectedNextGrid = [
+                    [false, false, false, false, false, false,],
+                    [false, false, false, true , false, false,],
+                    [false, true , false, false, true , false,],
+                    [false, true , false, false, true , false,],
+                    [false, false, true , false, false, false,],
+                    [false, false, false, false, false, false,],
+                ];
+    
+                expect(functionsToTest.nextGrid(currentGrid)).to.deep.equal(expectedNextGrid);
+            });
         });
     });
 

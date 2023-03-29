@@ -112,10 +112,39 @@ function parseInput(input) {
 function gameOfLifeIteration(currentState) {
     return {
         generationNumber: currentState.generationNumber + 1,
-        dimensions: currentState.dimensions,
+        dimensions: Object.assign({}, currentState.dimensions),
         grid: nextGrid(currentState.grid),
     };
 }
+
+function generationToString(state) {
+    const firstLine = `Generation ${state.generationNumber}:`;
+    const secondLine = `${state.dimensions.height} ${state.dimensions.width}`;
+    const lastLines = state.grid.map(
+        (row) => {
+            const transformedCells = row.map((cell) => cell ? "*" : ".");
+            return transformedCells.join("");
+        }
+    );
+
+    return `${firstLine}\n${secondLine}\n${lastLines.join("\n")}`;
+}
+
+const input = 
+`Generation 1:
+4 8
+........
+....*...
+...**...
+........`;
+
+console.log(input);
+
+const currentGeneration = parseInput(input);
+
+const nextGeneration = gameOfLifeIteration(currentGeneration);
+
+console.log(generationToString(nextGeneration));
 
 // the functions called by the tests
 

@@ -1,5 +1,11 @@
 // business logic functions
 
+function isCellWithinBoundaries(height, width) {
+    return cell =>
+        (0 <= cell.row    && cell.row    < height)
+    &&  (0 <= cell.column && cell.column < width );
+}
+
 function getAllNeighbors(row, column, height, width) {
     const potentialNeighbors = [
         {row: row-1, column: column  },
@@ -12,11 +18,7 @@ function getAllNeighbors(row, column, height, width) {
         {row: row+1, column: column+1},
     ];
 
-    return potentialNeighbors.filter(
-        cell =>  
-            (0 <= cell.row    && cell.row    < height)
-         && (0 <= cell.column && cell.column < width )
-    );
+    return potentialNeighbors.filter(isCellWithinBoundaries(height, width));
 }
 
 function numberOfAliveNeighbors(row, column, grid) {
@@ -39,28 +41,27 @@ function cellNewState(alive, aliveNeighbors) {
     return aliveAndStillAlive || deadAndBecomesAlive;
 }
 
+function nextCell(rowIndex, grid) {
+    return function(cell, columnIndex) {
+        const aliveNeighbors = numberOfAliveNeighbors(
+            rowIndex,
+            columnIndex,
+            grid
+        );
+
+        return cellNewState(
+            cell,
+            aliveNeighbors
+        );
+    }
+}
+
+function nextRow(row, rowIndex, grid) {
+    return row.map(nextCell(rowIndex, grid));
+}
+
 function nextGrid(currentGrid) {
-    const height = currentGrid.length;
-    const width = currentGrid[0].length;
-
-    const newGrid = Array(height).fill().map(
-        (row, rowIndex) => Array(width).fill().map(
-            (cell, columnIndex) => {
-                const aliveNeighbors = numberOfAliveNeighbors(
-                    rowIndex,
-                    columnIndex,
-                    currentGrid
-                );
-
-                return cellNewState(
-                    currentGrid[rowIndex][columnIndex],
-                    aliveNeighbors
-                );
-            }
-        )
-    );
-
-    return newGrid;
+    return currentGrid.map(nextRow);
 }
 
 // input parsing functions

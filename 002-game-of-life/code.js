@@ -35,10 +35,10 @@ function numberOfAliveNeighbors(row, column, grid) {
 }
 
 function cellNewState(alive, aliveNeighbors) {
-    const aliveAndStillAlive = alive && (aliveNeighbors === 2 || aliveNeighbors === 3);
-    const deadAndBecomesAlive = !alive && aliveNeighbors === 3;
+    const aliveStillAlive = alive && (aliveNeighbors === 2 || aliveNeighbors === 3);
+    const deadBecomesAlive = !alive && aliveNeighbors === 3;
 
-    return aliveAndStillAlive || deadAndBecomesAlive;
+    return aliveStillAlive || deadBecomesAlive;
 }
 
 function nextCell(rowIndex, grid) {

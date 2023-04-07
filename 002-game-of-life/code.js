@@ -116,7 +116,7 @@ function gameOfLifeIteration(currentState) {
     };
 }
 
-function generationToString(state) {
+function stateToString(state) {
     const firstLine = `Generation ${state.generationNumber}:`;
     const secondLine = `${state.dimensions.height} ${state.dimensions.width}`;
     const lastLines = state.grid.map(
@@ -143,7 +143,7 @@ const currentGeneration = parseInput(input);
 
 const nextGeneration = gameOfLifeIteration(currentGeneration);
 
-console.log(generationToString(nextGeneration));
+console.log(stateToString(nextGeneration));
 
 // the functions called by the tests
 

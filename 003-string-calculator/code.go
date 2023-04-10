@@ -82,20 +82,28 @@ func validateAndParse(strNum string, separated []string) (int, error) {
 	return strconv.Atoi(strNum)
 }
 
-func getSum(separated []string) (int, error) {
-	result := 0
+func parseNumbers(separated []string) ([]int, error) {
+	parsed := []int{}
 	for i := 0; i < len(separated); i++ {
 		num, err := validateAndParse(separated[i], separated)
-
 		if err != nil {
-			return 0, err
+			return []int{}, err
 		}
 
-		if num > 1000 {
+		parsed = append(parsed, num)
+	}
+
+	return parsed, nil
+}
+
+func getSum(parsed []int) (int, error) {
+	result := 0
+	for i := 0; i < len(parsed); i++ {
+		if parsed[i] > 1000 {
 			continue
 		}
 
-		result += num
+		result += parsed[i]
 	}
 
 	return result, nil
@@ -103,7 +111,13 @@ func getSum(separated []string) (int, error) {
 
 func add(numbers string) (int, error) {
 	separated := splitNumbers(numbers)
-	return getSum(separated)
+	parsed, err := parseNumbers(separated)
+
+	if err != nil {
+		return 0, err
+	}
+
+	return getSum(parsed)
 }
 
 func main() {

@@ -11,10 +11,8 @@ import (
 
 func hasCustomDelimiter(numbers string) bool {
 	regex := "^//.+\n"
-	matched, err := regexp.Match(regex, []byte(numbers))
-	if err != nil {
+	matched, _ := regexp.Match(regex, []byte(numbers))
 
-	}
 	return matched
 }
 
@@ -113,11 +111,7 @@ func add(numbers string) (int, error) {
 	separated := splitNumbers(numbers)
 	parsed, err := parseNumbers(separated)
 
-	if err != nil {
-		return 0, err
-	}
-
-	return getSum(parsed), nil
+	return getSum(parsed), err
 }
 
 func main() {

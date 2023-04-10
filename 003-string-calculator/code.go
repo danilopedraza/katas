@@ -96,7 +96,7 @@ func parseNumbers(separated []string) ([]int, error) {
 	return parsed, nil
 }
 
-func getSum(parsed []int) (int, error) {
+func getSum(parsed []int) int {
 	result := 0
 	for i := 0; i < len(parsed); i++ {
 		if parsed[i] > 1000 {
@@ -106,7 +106,7 @@ func getSum(parsed []int) (int, error) {
 		result += parsed[i]
 	}
 
-	return result, nil
+	return result
 }
 
 func add(numbers string) (int, error) {
@@ -117,7 +117,7 @@ func add(numbers string) (int, error) {
 		return 0, err
 	}
 
-	return getSum(parsed)
+	return getSum(parsed), nil
 }
 
 func main() {

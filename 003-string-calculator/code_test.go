@@ -128,7 +128,7 @@ func Test_Add_an_arbitrary_amount_of_numbers(t *testing.T) {
 	})
 }
 
-func Test_Use_comma_and_new_line_as_delimiters_between_numbers(t *testing.T) {
+func Test_Use_comma_and_new_line_as_delimiters(t *testing.T) {
 	given := bdd.Sentences().Given()
 
 	given(t, "a string with two numbers", func(when bdd.When) {

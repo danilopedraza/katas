@@ -107,5 +107,5 @@ func add(numbers string) (int, error) {
 }
 
 func main() {
-	fmt.Println("Hello, World!")
+	fmt.Println("Hello, Go!")
 }

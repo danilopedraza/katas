@@ -98,8 +98,6 @@ func ignoreBigNumbers(parsed []int) []int {
 	for i := 0; i < len(parsed); i++ {
 		if parsed[i] <= 1000 {
 			smallNumbers = append(smallNumbers, parsed[i])
-		} else {
-			continue
 		}
 	}
 

@@ -93,14 +93,24 @@ func parseNumbers(separated []string) ([]int, error) {
 	return parsed, nil
 }
 
-func getSum(parsed []int) int {
-	result := 0
+func ignoreBigNumbers(parsed []int) []int {
+	smallNumbers := []int{}
 	for i := 0; i < len(parsed); i++ {
-		if parsed[i] > 1000 {
+		if parsed[i] <= 1000 {
+			smallNumbers = append(smallNumbers, parsed[i])
+		} else {
 			continue
 		}
+	}
 
-		result += parsed[i]
+	return smallNumbers
+}
+
+func getSum(parsed []int) int {
+	smallNumbers := ignoreBigNumbers(parsed)
+	result := 0
+	for i := 0; i < len(smallNumbers); i++ {
+		result += smallNumbers[i]
 	}
 
 	return result

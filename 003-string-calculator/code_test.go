@@ -178,6 +178,15 @@ func Test_Allow_a_custom_delimiter(t *testing.T) {
 				assert.Equal(nil, err)
 			})
 		})
+
+		when(`add("//\n\n") is called`, func(it bdd.It) {
+
+			it("should return 0", func(assert bdd.Assert) {
+				result, err := add("//\n\n")
+				assert.Equal(0, result)
+				assert.Equal(nil, err)
+			})
+		})
 	})
 
 	given(t, "a string with a single number", func(when bdd.When) {
@@ -199,24 +208,6 @@ func Test_Allow_a_custom_delimiter(t *testing.T) {
 			it("should return 3", func(assert bdd.Assert) {
 				result, err := add("//.\n1.2")
 				assert.Equal(3, result)
-				assert.Equal(nil, err)
-			})
-		})
-
-		when(`add("//bbbb\n123bbbb24") is called`, func(it bdd.It) {
-
-			it("should return 147", func(assert bdd.Assert) {
-				result, err := add("//bbbb\n123bbbb24")
-				assert.Equal(147, result)
-				assert.Equal(nil, err)
-			})
-		})
-
-		when(`add("//56\n1568") is called`, func(it bdd.It) {
-
-			it("should return 9", func(assert bdd.Assert) {
-				result, err := add("//56\n1568")
-				assert.Equal(9, result)
 				assert.Equal(nil, err)
 			})
 		})

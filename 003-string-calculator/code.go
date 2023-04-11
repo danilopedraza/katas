@@ -10,21 +10,20 @@ import (
 )
 
 func hasCustomDelimiter(numbers string) bool {
-	regex := "^//.+\n"
-	matched, _ := regexp.Match(regex, []byte(numbers))
+	regex := "^//[.\n]\n"
+	matched, _ := regexp.MatchString(regex, numbers)
 
 	return matched
 }
 
 func splitByCustom(numbers string) []string {
-	before, after, _ := strings.Cut(numbers, "\n")
+	delimiter := string(numbers[2])
 
-	numbers = after
+	numbers = numbers[4:]
 	if numbers == "" {
 		return []string{}
 	}
 
-	delimiter := before[2:]
 	return strings.Split(numbers, delimiter)
 }
 

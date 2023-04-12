@@ -219,7 +219,7 @@ func Test_Forbid_negative_numbers(t *testing.T) {
 
 	given(t, "a string with a negative number", func(when bdd.When) {
 		when(`add("-1") is called`, func(it bdd.It) {
-			it("should return an error", func(assert bdd.Assert) {
+			it("should return a custom error", func(assert bdd.Assert) {
 				result, err := add("-1")
 				assert.Equal(0, result)
 				assert.Equal(`negatives not allowed: -1`, err.Error())
@@ -229,7 +229,7 @@ func Test_Forbid_negative_numbers(t *testing.T) {
 
 	given(t, "a string with several negative numbers", func(when bdd.When) {
 		when(`add("-1,1,-5") is called`, func(it bdd.It) {
-			it("should return an error", func(assert bdd.Assert) {
+			it("should return a custom error", func(assert bdd.Assert) {
 				result, err := add("-1,1,-5")
 				assert.Equal(0, result)
 				assert.Equal(`negatives not allowed: -1, -5`, err.Error())

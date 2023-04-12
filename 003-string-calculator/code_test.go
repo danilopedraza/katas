@@ -259,3 +259,72 @@ func Test_Ignore_big_numbers(t *testing.T) {
 		})
 	})
 }
+
+func Test_New_delimiter_format(t *testing.T) {
+	given := bdd.Sentences().Given()
+
+	given(t, "a string with no numbers", func(when bdd.When) {
+		when(`add("//[+]\n") is called`, func(it bdd.It) {
+			it("should return 0", func(assert bdd.Assert) {
+				result, err := add("//[++]\n")
+				assert.Equal(0, result)
+				assert.Equal(nil, err)
+			})
+		})
+
+		when(`add("//[+==;;]\n") is called`, func(it bdd.It) {
+			it("should return 0", func(assert bdd.Assert) {
+				result, err := add("//[+==;;]\n")
+				assert.Equal(0, result)
+				assert.Equal(nil, err)
+			})
+		})
+	})
+
+	given(t, "a string with two numbers", func(when bdd.When) {
+		when(`add("//[sep]\n1sep2") is called`, func(it bdd.It) {
+			it("should return 3", func(assert bdd.Assert) {
+				result, err := add("//[sep]\n1sep2")
+				assert.Equal(3, result)
+				assert.Equal(nil, err)
+			})
+		})
+
+		when(`add("//[]\n]\n1]\n5") is called`, func(it bdd.It) {
+			it("should return an error", func(assert bdd.Assert) {
+				_, err := add("//[]\n]\n1]\n5")
+				assert.NotEqual(nil, err)
+			})
+		})
+
+		when(`add("//[]\n15") is called`, func(it bdd.It) {
+			it("should return 6", func(assert bdd.Assert) {
+				result, err := add("//[]\n15")
+				assert.Equal(6, result)
+				assert.Equal(nil, err)
+			})
+		})
+	})
+}
+
+func Test_Allow_multiple_delimiters(t *testing.T) {
+	given := bdd.Sentences().Given()
+
+	given(t, "a string with three numbers", func(when bdd.When) {
+		when(`add("//[+][*]\n22+3*7") is called`, func(it bdd.It) {
+			it("should return 32", func(assert bdd.Assert) {
+				result, err := add("//[+][*]\n22+3*7")
+				assert.Equal(32, result)
+				assert.Equal(nil, err)
+			})
+		})
+
+		when(`add("//[AAAAAA][lololol]\n104AAAAAA1lololol5") is called`, func(it bdd.It) {
+			it("should return 110", func(assert bdd.Assert) {
+				result, err := add("//[AAAAAA][lololol]\n104AAAAAA1lololol5")
+				assert.Equal(110, result)
+				assert.Equal(nil, err)
+			})
+		})
+	})
+}

@@ -9,14 +9,49 @@ import (
 	"strings"
 )
 
-func hasCustomDelimiter(numbers string) bool {
+func hasCharDelimiter(numbers string) bool {
 	regex := "^//[.\n]\n"
 	matched, _ := regexp.MatchString(regex, numbers)
 
 	return matched
 }
 
-func splitByCustom(numbers string) []string {
+func hasStringDelimiters(numbers string) bool {
+	regex := `^//(\[(.|\n)*\])+\n`
+	matched, _ := regexp.MatchString(regex, numbers)
+
+	return matched
+}
+
+func QuoteMeta(delimiters []string) []string {
+	result := []string{}
+
+	for i := 0; i < len(delimiters); i++ {
+		result = append(result, regexp.QuoteMeta(delimiters[i]))
+	}
+
+	return result
+}
+
+func getRegex(delimiters []string) regexp.Regexp {
+	quoted := QuoteMeta(delimiters)
+
+	return *regexp.MustCompile(strings.Join(quoted, "|"))
+}
+
+func splitByCustomStrings(numbers string) []string {
+	before, after, _ := strings.Cut(numbers, "]\n")
+	if after == "" {
+		return []string{}
+	}
+
+	delimiters := strings.Split(before[3:], "][")
+	regex := getRegex(delimiters)
+
+	return regex.Split(after, -1)
+}
+
+func splitByCustomChar(numbers string) []string {
 	delimiter := string(numbers[2])
 
 	numbers = numbers[4:]
@@ -36,8 +71,10 @@ func splitByDefault(numbers string) []string {
 }
 
 func splitNumbers(numbers string) []string {
-	if hasCustomDelimiter(numbers) {
-		return splitByCustom(numbers)
+	if hasCharDelimiter(numbers) {
+		return splitByCustomChar(numbers)
+	} else if hasStringDelimiters(numbers) {
+		return splitByCustomStrings(numbers)
 	}
 
 	return splitByDefault(numbers)

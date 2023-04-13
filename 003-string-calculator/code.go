@@ -130,7 +130,7 @@ func parseNumbers(separated []string) ([]int, error) {
 	return parsed, nil
 }
 
-func ignoreBigNumbers(parsed []int) []int {
+func omitBigNumbers(parsed []int) []int {
 	smallNumbers := []int{}
 	for i := 0; i < len(parsed); i++ {
 		if parsed[i] <= 1000 {
@@ -142,7 +142,7 @@ func ignoreBigNumbers(parsed []int) []int {
 }
 
 func getSum(parsed []int) int {
-	smallNumbers := ignoreBigNumbers(parsed)
+	smallNumbers := omitBigNumbers(parsed)
 	result := 0
 	for i := 0; i < len(smallNumbers); i++ {
 		result += smallNumbers[i]

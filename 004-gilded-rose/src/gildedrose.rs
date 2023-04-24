@@ -87,11 +87,11 @@ impl GildedRose {
     }
 
     fn update_item(item: &mut Item) {
+        Self::update_item_sell_in(item);
+
         if Self::is_legendary(item) {
             return;
         }
-
-        Self::update_item_sell_in(item);
 
         Self::update_item_quality(item);
     }
@@ -108,11 +108,20 @@ mod tests {
     use super::{GildedRose, Item};
 
     #[test]
-    pub fn foo() {
-        let items = vec![Item::new("foo", 0, 0)];
+    pub fn sulfuras_should_update_sell_in() {
+        let items = vec![Item::new("Sulfuras, Hand of Ragnaros", 10, 80)];
         let mut rose = GildedRose::new(items);
         rose.update_quality();
 
-        assert_eq!("foo", rose.items[0].name);
+        assert_eq!(9, rose.items[0].sell_in);
+    }
+
+    #[test]
+    pub fn sulfuras_should_keep_quality_the_same() {
+        let items = vec![Item::new("Sulfuras, Hand of Ragnaros", 10, 80)];
+        let mut rose = GildedRose::new(items);
+        rose.update_quality();
+
+        assert_eq!(80, rose.items[0].quality);
     }
 }

@@ -35,12 +35,12 @@ impl GildedRose {
     }
 
     fn update_concert_quality(item: &mut Item) {
-        if 0 <= item.sell_in && item.sell_in < 5 {
+        if item.sell_in < 0 {
+            item.quality = 0;
+        } else if 0 <= item.sell_in && item.sell_in < 5 {
             item.quality += 3;
         } else if 5 <= item.sell_in && item.sell_in < 10 {
             item.quality += 2;
-        } else if item.sell_in < 0 {
-            item.quality = 0;
         } else {
             item.quality += 1;
         }

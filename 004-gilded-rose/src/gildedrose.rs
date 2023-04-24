@@ -34,7 +34,7 @@ impl GildedRose {
         item.sell_in = item.sell_in - 1;
     }
 
-    fn update_concert_quality(item: &mut Item) {
+    fn update_concert_pass_quality(item: &mut Item) {
         if item.sell_in < 0 {
             item.quality = 0;
         } else if 0 <= item.sell_in && item.sell_in < 5 {
@@ -62,11 +62,19 @@ impl GildedRose {
         }
     }
 
+    fn update_conjured_item_quality(item: &mut Item) {
+        if item.sell_in < 0 {
+            item.quality -= 4;
+        } else {
+            item.quality -= 2;
+        }
+    }
+
     fn fix_quality_constraints(item: &mut Item) {
         if item.quality > 50 {
             item.quality = 50;
         }
-        
+
         if item.quality < 0 {
             item.quality = 0;
         }
@@ -74,7 +82,8 @@ impl GildedRose {
 
     fn update_item_quality(item: &mut Item) {
         match item.name.as_ref() {
-            "Backstage passes to a TAFKAL80ETC concert" => Self::update_concert_quality(item),
+            "Conjured Mana Cake" => Self::update_conjured_item_quality(item),
+            "Backstage passes to a TAFKAL80ETC concert" => Self::update_concert_pass_quality(item),
             "Aged Brie" => Self::update_aged_brie_quality(item),
             _ => Self::update_generic_item_quality(item),
         }
@@ -123,5 +132,23 @@ mod tests {
         rose.update_quality();
 
         assert_eq!(80, rose.items[0].quality);
+    }
+
+    #[test]
+    pub fn conjured_item_should_decrease_quality_faster_before_sell_date() {
+        let items = vec![Item::new("Conjured Mana Cake", 3, 6)];
+        let mut rose = GildedRose::new(items);
+        rose.update_quality();
+
+        assert_eq!(4, rose.items[0].quality);
+    }
+
+    #[test]
+    pub fn conjured_item_should_decrease_quality_faster_after_sell_date() {
+        let items = vec![Item::new("Conjured Mana Cake", 0, 6)];
+        let mut rose = GildedRose::new(items);
+        rose.update_quality();
+
+        assert_eq!(2, rose.items[0].quality);
     }
 }

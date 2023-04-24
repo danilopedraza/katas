@@ -34,7 +34,7 @@ impl GildedRose {
         item.sell_in = item.sell_in - 1;
     }
 
-    fn update_concert_pass_quality(item: &mut Item) {
+    fn update_backstage_pass_quality(item: &mut Item) {
         if item.sell_in < 0 {
             item.quality = 0;
         } else if 0 <= item.sell_in && item.sell_in < 5 {
@@ -80,19 +80,34 @@ impl GildedRose {
         }
     }
 
+    fn is_legendary(item: &mut Item) -> bool {
+        return item.name == "Sulfuras, Hand of Ragnaros";
+    }
+
+    fn is_conjured(item: &mut Item) -> bool {
+        return item.name == "Conjured Mana Cake";
+    }
+
+    fn is_backstage_pass(item: &mut Item) -> bool {
+        return item.name == "Backstage passes to a TAFKAL80ETC concert";
+    }
+
+    fn is_aged_brie(item: &mut Item) -> bool {
+        return item.name == "Aged Brie"
+    }
+
     fn update_item_quality(item: &mut Item) {
-        match item.name.as_ref() {
-            "Conjured Mana Cake" => Self::update_conjured_item_quality(item),
-            "Backstage passes to a TAFKAL80ETC concert" => Self::update_concert_pass_quality(item),
-            "Aged Brie" => Self::update_aged_brie_quality(item),
-            _ => Self::update_generic_item_quality(item),
+        if Self::is_conjured(item) {
+            Self::update_conjured_item_quality(item);
+        } else if Self::is_backstage_pass(item) {
+            Self::update_backstage_pass_quality(item);
+        } else if Self::is_aged_brie(item) {
+            Self::update_aged_brie_quality(item);
+        } else {
+            Self::update_generic_item_quality(item);
         }
 
         Self::fix_quality_constraints(item);
-    }
-
-    fn is_legendary(item: &mut Item) -> bool {
-        return item.name == "Sulfuras, Hand of Ragnaros";
     }
 
     fn update_item(item: &mut Item) {

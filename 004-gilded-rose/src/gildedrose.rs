@@ -82,8 +82,12 @@ impl GildedRose {
         Self::fix_quality_constraints(item);
     }
 
+    fn is_legendary(item: &mut Item) -> bool {
+        return item.name == "Sulfuras, Hand of Ragnaros";
+    }
+
     fn update_item(item: &mut Item) {
-        if item.name == "Sulfuras, Hand of Ragnaros" {
+        if Self::is_legendary(item) {
             return;
         }
 

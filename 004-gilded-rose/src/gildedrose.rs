@@ -80,10 +80,6 @@ impl GildedRose {
         }
     }
 
-    fn is_legendary(item: &mut Item) -> bool {
-        return item.name == "Sulfuras, Hand of Ragnaros";
-    }
-
     fn is_conjured(item: &mut Item) -> bool {
         return item.name == "Conjured Mana Cake";
     }
@@ -108,6 +104,10 @@ impl GildedRose {
         }
 
         Self::fix_quality_constraints(item);
+    }
+
+    fn is_legendary(item: &mut Item) -> bool {
+        return item.name == "Sulfuras, Hand of Ragnaros";
     }
 
     fn update_item(item: &mut Item) {

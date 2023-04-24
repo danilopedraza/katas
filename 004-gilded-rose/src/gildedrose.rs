@@ -34,31 +34,35 @@ impl GildedRose {
         item.sell_in = item.sell_in - 1;
     }
 
-    fn update_item_quality(item: &mut Item) {
-        if item.name == "Backstage passes to a TAFKAL80ETC concert" {
-            if 0 <= item.sell_in && item.sell_in <= 4 {
-                item.quality += 3;
-            } else if 5 <= item.sell_in && item.sell_in <= 9 {
-                item.quality += 2;
-            } else if item.sell_in < 0 {
-                item.quality = 0;
-            } else {
-                item.quality += 1;
-            }
-        } else if item.name == "Aged Brie" {
-            if item.sell_in < 0 {
-                item.quality = item.quality + 2;
-            } else {
-                item.quality = item.quality + 1;
-            }
+    fn update_concert_quality(item: &mut Item) {
+        if 0 <= item.sell_in && item.sell_in <= 4 {
+            item.quality += 3;
+        } else if 5 <= item.sell_in && item.sell_in <= 9 {
+            item.quality += 2;
+        } else if item.sell_in < 0 {
+            item.quality = 0;
         } else {
-            if item.sell_in < 0 {
-                item.quality = item.quality - 2;
-            } else {
-                item.quality = item.quality - 1;
-            }
+            item.quality += 1;
         }
+    }
 
+    fn update_aged_brie_quality(item: &mut Item) {
+        if item.sell_in < 0 {
+            item.quality = item.quality + 2;
+        } else {
+            item.quality = item.quality + 1;
+        }
+    }
+
+    fn update_generic_item_quality(item: &mut Item) {
+        if item.sell_in < 0 {
+            item.quality = item.quality - 2;
+        } else {
+            item.quality = item.quality - 1;
+        }
+    }
+
+    fn fix_quality_constraints(item: &mut Item) {
         if item.quality > 50 {
             item.quality = 50;
         }
@@ -66,6 +70,16 @@ impl GildedRose {
         if item.quality < 0 {
             item.quality = 0;
         }
+    }
+
+    fn update_item_quality(item: &mut Item) {
+        match item.name.as_ref() {
+            "Backstage passes to a TAFKAL80ETC concert" => Self::update_concert_quality(item),
+            "Aged Brie" => Self::update_aged_brie_quality(item),
+            _ => Self::update_generic_item_quality(item),
+        }
+
+        Self::fix_quality_constraints(item);
     }
 
     fn update_item(item: &mut Item) {

@@ -73,10 +73,10 @@ impl GildedRose {
     fn fix_quality_constraints(item: &mut Item) {
         if item.quality > 50 {
             item.quality = 50;
-        }
-
-        if item.quality < 0 {
+        } else if item.quality < 0 {
             item.quality = 0;
+        } else {
+            // nothing to do: quality is already within boundaries
         }
     }
 
@@ -114,10 +114,10 @@ impl GildedRose {
         Self::update_item_sell_in(item);
 
         if Self::is_legendary(item) {
-            return;
+            // nothing to do: quality of legendary items does not change
+        } else {
+            Self::update_item_quality(item);
         }
-
-        Self::update_item_quality(item);
     }
 
     pub fn update_quality(&mut self) {

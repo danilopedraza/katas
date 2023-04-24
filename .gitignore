@@ -106,10 +106,9 @@ dist
 
 # acceptance test files
 
-./expected
-./actual
-./main
+expected
+actual
 
-# unit test files
+# build files
 
-./target
+target/

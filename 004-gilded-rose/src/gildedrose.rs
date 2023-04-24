@@ -48,17 +48,17 @@ impl GildedRose {
 
     fn update_aged_brie_quality(item: &mut Item) {
         if item.sell_in < 0 {
-            item.quality = item.quality + 2;
+            item.quality += 2;
         } else {
-            item.quality = item.quality + 1;
+            item.quality += 1;
         }
     }
 
     fn update_generic_item_quality(item: &mut Item) {
         if item.sell_in < 0 {
-            item.quality = item.quality - 2;
+            item.quality -= 2;
         } else {
-            item.quality = item.quality - 1;
+            item.quality -= 1;
         }
     }
 

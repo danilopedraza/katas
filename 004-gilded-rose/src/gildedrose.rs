@@ -166,4 +166,49 @@ mod tests {
 
         assert_eq!(2, rose.items[0].quality);
     }
+
+    #[test]
+    pub fn backstage_pass_quality_should_increase_faster_before_concert() {
+        let items = vec![Item::new("Backstage passes to a TAFKAL80ETC concert", 10, 10)];
+        let mut rose = GildedRose::new(items);
+        rose.update_quality();
+
+        assert_eq!(12, rose.items[0].quality);
+    }
+
+    #[test]
+    pub fn backstage_pass_quality_should_increase_even_faster_before_concert() {
+        let items = vec![Item::new("Backstage passes to a TAFKAL80ETC concert", 5, 10)];
+        let mut rose = GildedRose::new(items);
+        rose.update_quality();
+
+        assert_eq!(13, rose.items[0].quality);
+    }
+
+    #[test]
+    pub fn backstage_pass_quality_should_be_zero_after_concert() {
+        let items = vec![Item::new("Backstage passes to a TAFKAL80ETC concert", 0, 10)];
+        let mut rose = GildedRose::new(items);
+        rose.update_quality();
+
+        assert_eq!(0, rose.items[0].quality);
+    }
+
+    #[test]
+    pub fn aged_brie_quality_should_increase_before_sell_date() {
+        let items = vec![Item::new("Aged Brie", 1, 10)];
+        let mut rose = GildedRose::new(items);
+        rose.update_quality();
+
+        assert_eq!(11, rose.items[0].quality);
+    }
+
+    #[test]
+    pub fn aged_brie_quality_should_increase_faster_after_sell_date() {
+        let items = vec![Item::new("Aged Brie", 0, 10)];
+        let mut rose = GildedRose::new(items);
+        rose.update_quality();
+
+        assert_eq!(12, rose.items[0].quality);
+    }
 }

@@ -151,7 +151,7 @@ mod tests {
 
     #[test]
     pub fn conjured_item_should_decrease_quality_faster_before_sell_date() {
-        let items = vec![Item::new("Conjured Mana Cake", 3, 6)];
+        let items = vec![Item::new("Conjured Mana Cake", 1, 6)];
         let mut rose = GildedRose::new(items);
         rose.update_quality();
 

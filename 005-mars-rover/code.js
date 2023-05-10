@@ -50,15 +50,52 @@ function forwardMoved(rover) {
     };
 }
 
-export function moved(rover, moves) {
+function isRoverWithinBoundaries(rover, plateau) {
+    return (0 <= rover.x  && rover.x < plateau.size.width)
+        && (0 <= rover.y  && rover.y < plateau.size.length);
+}
+
+function movementPossible(rover, plateau) {
+    return isRoverWithinBoundaries(forwardMoved(rover), plateau)
+        && !plateau.cells[forwardMoved(rover).y][forwardMoved(rover).x]
+}
+
+export function movedRover(rover, moves, plateau) {
     switch (moves[0]) {
         case undefined:
             return rover;
         case 'L':
-            return moved(leftRotated(rover) , moves.slice(1));
+            return movedRover(leftRotated(rover) , moves.slice(1), plateau);
         case 'R':
-            return moved(rightRotated(rover), moves.slice(1));
+            return movedRover(rightRotated(rover), moves.slice(1), plateau);
         case 'M':
-            return moved(forwardMoved(rover), moves.slice(1));
+            if (movementPossible(rover, plateau))
+                return movedRover(forwardMoved(rover), moves.slice(1), plateau);
+            else
+                return rover;          
     }
+}
+
+export function movedRovers(rovers, plateau, roverIndex=0) {
+    if (roverIndex === rovers.length)
+        return rovers;
+    
+    return movedRovers(
+        rovers.map(
+            (roverWithMoves, arrIndex) => arrIndex === roverIndex ?
+                movedRover(roverWithMoves.rover, roverWithMoves.moves, plateau) :
+                roverWithMoves
+        ),
+        plateau,
+        // updated(
+        //     plateau,
+        //     rovers[roverIndex].rover, 
+        //     movedRover(
+        //         rovers[roverIndex].rover,
+        //         rovers[roverIndex].moves,
+        //         plateau
+        //     )
+        // ),
+        roverIndex+1
+    );
 }

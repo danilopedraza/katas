@@ -55,9 +55,13 @@ function isRoverWithinBoundaries(rover, plateau) {
         && (0 <= rover.y  && rover.y < plateau.size.length);
 }
 
+function isCellFree(x, y, plateau) {
+    return !plateau.cells[y][x];
+}
+
 function movementPossible(rover, plateau) {
     return isRoverWithinBoundaries(forwardMoved(rover), plateau)
-        && !plateau.cells[forwardMoved(rover).y][forwardMoved(rover).x]
+        && isCellFree(forwardMoved(rover).x, forwardMoved(rover).y, plateau);
 }
 
 export function movedRover(rover, moves, plateau) {

@@ -80,17 +80,37 @@ export function movedRover(rover, moves, plateau) {
     }
 }
 
-export function movedRovers(rovers, plateau, roverIndex=0) {
-    if (roverIndex === rovers.length)
-        return rovers;
+function updated(plateau, oldRover, newRover) {
+    if (oldRover.x === newRover.x && oldRover.y === newRover.y)
+        return plateau;
     
-    return movedRovers(
-        rovers.map(
-            (roverWithMoves, arrIndex) => arrIndex === roverIndex ?
-                movedRover(roverWithMoves.rover, roverWithMoves.moves, plateau) :
-                roverWithMoves
+    return {
+        cells: plateau.cells.map((row, rowIndex) =>
+            row.map((cell, columnIndex) => {
+                if      (oldRover.y === rowIndex && oldRover.x === columnIndex) 
+                    return false;
+                else if (newRover.y === rowIndex && newRover.x === columnIndex)
+                    return true;
+                else
+                    return cell;
+            })
         ),
-        plateau,
-        roverIndex+1
+        size: plateau.size,
+    };
+}
+
+export function movedRovers(rovers, plateau) {
+    if (rovers.length === 0)
+        return [];
+    
+    return  [movedRover(rovers[0].rover, rovers[0].moves, plateau)].concat(
+        movedRovers(
+            rovers.slice(1),
+            updated(
+                plateau,
+                rovers[0].rover,
+                movedRover(rovers[0].rover, rovers[0].moves, plateau)
+            )
+        )
     );
 }

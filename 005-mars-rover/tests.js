@@ -207,15 +207,10 @@ describe("When there are two rovers in a 1x2 plateau", () => {
                     expect(
                         movedRovers(
                             [
-                                {
-                                    rover:{x: 0, y: 0, orientation: "N"},
-                                    moves: "M",
-                                },
-                                {
-                                    rover:{x: 0, y: 1, orientation: "S"},
-                                    moves: "M",
-                                },
+                                {x: 0, y: 0, orientation: "N"},
+                                {x: 0, y: 1, orientation: "S"},
                             ],
+                            ["M", "M",],
                             {
                                 size: {
                                     width: 1,
@@ -247,15 +242,10 @@ describe("When there are two rovers in a 2x2 plateau" , () => {
                     expect(
                         movedRovers(
                             [
-                                {
-                                    rover:{x: 0, y: 0, orientation: "N"},
-                                    moves: "M",
-                                },
-                                {
-                                    rover:{x: 1, y: 1, orientation: "W"},
-                                    moves: "M",
-                                },
+                                {x: 0, y: 0, orientation: "N"},
+                                {x: 1, y: 1, orientation: "W"},
                             ],
+                            ["M", "M",],
                             {
                                 size: {
                                     width: 2,

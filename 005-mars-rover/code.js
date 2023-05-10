@@ -99,17 +99,18 @@ function updated(plateau, oldRover, newRover) {
     };
 }
 
-export function movedRovers(rovers, plateau) {
+export function movedRovers(rovers, moves, plateau) {
     if (rovers.length === 0)
         return [];
     
-    return  [movedRover(rovers[0].rover, rovers[0].moves, plateau)].concat(
+    return  [movedRover(rovers[0], moves[0], plateau)].concat(
         movedRovers(
             rovers.slice(1),
+            moves.slice(1),
             updated(
                 plateau,
-                rovers[0].rover,
-                movedRover(rovers[0].rover, rovers[0].moves, plateau)
+                rovers[0],
+                movedRover(rovers[0], moves[0], plateau)
             )
         )
     );

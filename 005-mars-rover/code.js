@@ -91,15 +91,6 @@ export function movedRovers(rovers, plateau, roverIndex=0) {
                 roverWithMoves
         ),
         plateau,
-        // updated(
-        //     plateau,
-        //     rovers[roverIndex].rover, 
-        //     movedRover(
-        //         rovers[roverIndex].rover,
-        //         rovers[roverIndex].moves,
-        //         plateau
-        //     )
-        // ),
         roverIndex+1
     );
 }

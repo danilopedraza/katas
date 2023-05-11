@@ -6,7 +6,8 @@
   "main": "index.js",
   "scripts": {
     "test": "mocha tests.js --compilers js:babel-core/register",
-    "test:watch": "npm run test -- --watch"
+    "test:watch": "npm run test -- --watch",
+    "coverage": "nyc npm run test"
   },
   "author": "",
   "license": "ISC",
@@ -17,7 +18,8 @@
     "eslint": "^4.15.0",
     "eslint-config-asemio": "github:asemio/eslint-config-asemio",
     "mocha": "^3.4.2",
-    "mocha-eslint": "^4.1.0"
+    "mocha-eslint": "^4.1.0",
+    "nyc": "^15.1.0"
   },
   "babel": {
     "presets": ["env"]

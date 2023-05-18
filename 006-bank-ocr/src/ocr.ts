@@ -126,7 +126,7 @@ export class Ocr {
         if (code.some(obj => obj instanceof OCRNone))
             return 'ILL';
 
-        return '   ';
+            return '   ';
         }
 
     private parseCode(lines: string[]): string {

@@ -63,12 +63,9 @@ class OCRNumeral extends OCRCharacter {
     }
 
     public check(inputLines: string[]) : boolean {
-        let allCharsEqual = true;
-        for (let row = 0; row < 4 && allCharsEqual; ++row) {
-            allCharsEqual = inputLines[row] === this.lines[row];
-        }
-
-        return allCharsEqual;
+        return [...Array(this.lines.length).keys()].every(
+            row => inputLines[row] === this.lines[row]
+        ) && this.lines.length === inputLines.length;
     }
 
     public value() : any {
@@ -98,6 +95,7 @@ export class Ocr {
     characters: OCRCharacter[];
     codeLength: number;
     charLength: number;
+    OCRHeight: number;
 
     constructor() {
         this.characters = NUMERALS.map(
@@ -106,6 +104,7 @@ export class Ocr {
 
         this.codeLength = 9;
         this.charLength = 4;
+        this.OCRHeight = 4;
     }
 
     private parseCharacter(lines: string[]): OCRCharacter {
@@ -131,8 +130,7 @@ export class Ocr {
         }
 
     private parseCode(lines: string[]): string {
-        const separatedChars = Array.from(
-            Array(this.codeLength).keys(),
+        const separatedChars = [...Array(this.codeLength).keys()].map(
             pos => lines.map(line => line.slice(this.charLength*pos, this.charLength*(pos+1)))
         );
 
@@ -146,11 +144,11 @@ export class Ocr {
     }
 
     public parse(lines: string[]): string[] {
-        const result: string[] = [];
-        for (let i = 0; i < lines.length; i += 4) {
-            result.push(this.parseCode(lines.slice(i, i+4)));
-        }
+        if (lines.length < this.OCRHeight)
+            return [];
 
-        return result;
+        return [this.parseCode(lines.slice(0, this.OCRHeight))].concat(
+            this.parse(lines.slice(this.OCRHeight))
+        );
     }
 }

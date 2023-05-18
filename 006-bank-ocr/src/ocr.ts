@@ -65,7 +65,7 @@ class OCRNumeral extends OCRCharacter {
     public check(inputLines: string[]) : boolean {
         return [...Array(this.lines.length).keys()].every(
             row => inputLines[row] === this.lines[row]
-        ) && this.lines.length === inputLines.length;
+        );
     }
 
     public value() : any {

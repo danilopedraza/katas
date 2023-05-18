@@ -96,11 +96,16 @@ class OCRNone extends OCRCharacter {
 
 export class Ocr {
     characters: OCRCharacter[];
+    codeLength: number;
+    charLength: number;
 
     constructor() {
         this.characters = NUMERALS.map(
             (numeral, index) => new OCRNumeral(numeral, index)
         );
+
+        this.codeLength = 9;
+        this.charLength = 4;
     }
 
     private parseCharacter(lines: string[]): OCRCharacter {
@@ -113,7 +118,7 @@ export class Ocr {
 
     private calculateChecksum(code: OCRCharacter[]) : number {
         return code.reduce(
-            (acc, obj, index) => acc + (9 - index)*obj.value(),
+            (acc, obj, index) => acc + (this.codeLength - index)*obj.value(),
             0
         );
     }
@@ -127,8 +132,8 @@ export class Ocr {
 
     private parseCode(lines: string[]): string {
         const separatedChars = Array.from(
-            Array(9).keys(),
-            pos => lines.map(line => line.slice(4*pos, 4*(pos+1)))
+            Array(this.codeLength).keys(),
+            pos => lines.map(line => line.slice(this.charLength*pos, this.charLength*(pos+1)))
         );
 
         const code = separatedChars.map(

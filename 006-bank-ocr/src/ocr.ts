@@ -140,7 +140,7 @@ export class Ocr {
 
         const suffix = this.getSuffix(code);
 
-        return `${code.map(e => e.toString()).join('')} ${suffix}`;
+        return `${code.reduce((acc, char) => acc+char.toString(), "")} ${suffix}`;
     }
 
     public parse(lines: string[]): string[] {

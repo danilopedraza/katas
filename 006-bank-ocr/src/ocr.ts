@@ -115,7 +115,7 @@ export class Ocr {
         return matchedCharacter || new OCRNone(lines);
     }
 
-    private calculateChecksum(code: OCRCharacter[]) : number {
+    private checksum(code: OCRCharacter[]) : number {
         return code.reduce(
             (acc, obj, index) => acc + (this.codeLength - index)*obj.value(),
             0
@@ -125,6 +125,8 @@ export class Ocr {
     private getSuffix(code: OCRCharacter[]) : string {
         if (code.some(obj => obj instanceof OCRNone))
             return 'ILL';
+        if (this.checksum(code) % 11)
+            return 'ERR';
 
         return '   ';
     }

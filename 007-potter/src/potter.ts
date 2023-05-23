@@ -8,3 +8,14 @@ export class PotterPriceCalculator {
         return books.length * 8;
     }
 }
+
+export class Multiset<T> {
+    elements: T[]
+    constructor(array?: T[]) {
+        this.elements = array || [];
+    }
+
+    public get size() {
+        return this.elements.length;
+    }
+}

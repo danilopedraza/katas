@@ -1,6 +1,6 @@
 import { Multiset, PotterBook, PotterPriceCalculator } from '../src/potter';
 
-describe('The Potter price calculator', () => {
+describe('The Potter book price calculator', () => {
     it('should return 0 when there are no copies', () => {
         expect(new PotterPriceCalculator().getPrice([])).toEqual(0);
     });

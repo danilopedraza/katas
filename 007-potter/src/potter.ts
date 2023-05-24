@@ -48,9 +48,11 @@ export class Multiset<T extends Distinguishable> {
         return this.repetitions(element) > 0;
     }
 
-    public subset(other: Multiset<T>) {        
-        return this.size <= other.size &&
-               this.elements.every(element => this.repetitions(element) <= other.repetitions(element));
+    public subset(other: Multiset<T>) {
+        return this.size <= other.size
+            && this.elements.every(
+                element => this.repetitions(element) <= other.repetitions(element)
+            );
     }
 
     public equals(other: Multiset<T>) {
@@ -61,17 +63,26 @@ export class Multiset<T extends Distinguishable> {
         return new Multiset(this.elements.concat(other.elements));
     }
 
+    public withoutOne(otherElement: T) {
+        return new Multiset(this.elements.filter(
+            (element, index) => 
+                this.elements.slice(0, index).includes(otherElement) ||
+                element != otherElement 
+            )
+        );
+    }
+
     public static allSetPartitions<T extends Distinguishable>(multiset: Multiset<T>) {
         return new Multiset([multiset]);
     }
 }
 
-export class PotterBookOrder extends Multiset<PotterBook> {
-    constructor(books: PotterBook[]) {
-        super(books);
-    }
+// export class PotterBookOrder extends Multiset<PotterBook> {
+//     constructor(books: PotterBook[]) {
+//         super(books);
+//     }
 
-    public suborder(other: PotterBookOrder) {
-        return this.subset(other);
-    }
-}
+//     public suborder(other: PotterBookOrder) {
+//         return this.subset(other);
+//     }
+// }

@@ -1,3 +1,5 @@
+import { throws } from "assert";
+
 export class PotterPriceCalculator {
     multipliers: number[];
     constructor() {
@@ -9,9 +11,9 @@ export class PotterPriceCalculator {
     }
 }
 
-export class Multiset<T> {
-    elements: T[]
-    constructor(array?: T[]) {
+export class Multiset {
+    elements: number[];
+    constructor(array?: number[]) {
         this.elements = array || [];
     }
 
@@ -19,7 +21,19 @@ export class Multiset<T> {
         return this.elements.length;
     }
 
-    public contained(other: Multiset<T>) {
-        return true;
+    public has(element: number) {
+        return this.repetitions(element) > 0;
+    }
+
+    public repetitions(element: number) {
+        return this.elements.reduce(
+            (acc, value) => acc + Number(value === element),
+            0
+        );
+    }
+
+    public subset(other: Multiset) {        
+        return this.size <= other.size &&
+               this.elements.every(element => this.repetitions(element) <= other.repetitions(element));
     }
 }

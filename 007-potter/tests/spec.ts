@@ -38,22 +38,32 @@ describe('A multiset', () => {
                 });
             });
 
-            describe('A multiset is contained in another', () => {
+            describe('A multiset is a subset of another multiset', () => {
                 describe('if all of its elements are in the other', () => {
                     describe('at least the same amount of times.', () => {
                         describe('An empty multiset is contained in every multiset,', () => {
                             it('like another empty multiset', () => {
-                                expect(new Multiset().contained(new Multiset())).toBeTruthy;
+                                expect(new Multiset().subset(new Multiset())).toEqual(true);
                             });
 
                             it('like a single element multiset', () => {
-                                expect(new Multiset().contained(new Multiset([0]))).toBeTruthy;
+                                expect(new Multiset().subset(new Multiset([0]))).toEqual(true);
                             });
                         });
 
                         describe('A single element multiset', () => {
                             it('should not be contained in an empty multiset', () => {
-                                expect(new Multiset([0]).contained(new Multiset())).toBeFalsy;
+                                expect(new Multiset([0]).subset(new Multiset())).toEqual(false);
+                            });
+                        });
+
+                        describe('A two-element multiset', () => {
+                            it('should not be a subset of a single element multiset', () => {
+                                expect(new Multiset([0,0]).subset(new Multiset([0]))).toEqual(false);
+                            });
+
+                            it('should not be a subset of a multiset with less repetitions', () => {
+                                expect(new Multiset([0,0]).subset(new Multiset([0,1]))).toEqual(false);
                             });
                         });
                     });

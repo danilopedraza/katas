@@ -1,4 +1,4 @@
-import { allSetPartitions, Multiset, PotterPriceCalculator } from '../src/potter';
+import { Multiset, PotterBook, PotterPriceCalculator } from '../src/potter';
 
 describe('The Potter price calculator', () => {
     it('should return 0 when there are no copies', () => {
@@ -29,11 +29,11 @@ describe('A multiset', () => {
                     });
 
                     it('with a single element array', () => {
-                        expect(new Multiset([0]).size).toEqual(1);
+                        expect(new Multiset([new PotterBook(0)]).size).toEqual(1);
                     });
 
                     it('with an array of two equal elements', () => {
-                        expect(new Multiset([0, 0]).size).toEqual(2);
+                        expect(new Multiset([new PotterBook(0), new PotterBook(0)]).size).toEqual(2);
                     });
                 });
             });
@@ -47,23 +47,23 @@ describe('A multiset', () => {
                             });
 
                             it('like a single element multiset', () => {
-                                expect(new Multiset().subset(new Multiset([0]))).toEqual(true);
+                                expect(new Multiset().subset(new Multiset([new PotterBook(0)]))).toEqual(true);
                             });
                         });
 
                         describe('A single element multiset', () => {
                             it('should not be contained in an empty multiset', () => {
-                                expect(new Multiset([0]).subset(new Multiset())).toEqual(false);
+                                expect(new Multiset([new PotterBook(0)]).subset(new Multiset())).toEqual(false);
                             });
                         });
 
                         describe('A two-element multiset', () => {
                             it('should not be a subset of a single element multiset', () => {
-                                expect(new Multiset([0,0]).subset(new Multiset([0]))).toEqual(false);
+                                expect(new Multiset([new PotterBook(0),new PotterBook(0)]).subset(new Multiset([new PotterBook(0)]))).toEqual(false);
                             });
 
                             it('should not be a subset of a multiset with less repetitions in one element', () => {
-                                expect(new Multiset([0,0]).subset(new Multiset([0,1]))).toEqual(false);
+                                expect(new Multiset([new PotterBook(0), new PotterBook(0)]).subset(new Multiset([new PotterBook(0), new PotterBook(1)]))).toEqual(false);
                             });
                         });
                     });
@@ -73,7 +73,7 @@ describe('A multiset', () => {
             describe('A multiset is equal to another multiset', () => {
                 describe('if the one is a subset of the other and viceversa.', () => {
                     it('The order of the generating array doesn\'t matter', () => {
-                        expect(new Multiset([0,1]).equals(new Multiset([1,0]))).toEqual(true);
+                        expect(new Multiset([new PotterBook(0), new PotterBook(1)]).equals(new Multiset([new PotterBook(1), new PotterBook(0)]))).toEqual(true);
                     });
                 });
             });
@@ -87,7 +87,7 @@ describe('A multiset', () => {
                             });
 
                             it('for single element multisets', () => {
-                                expect(new Multiset([0]).union(new Multiset([0])).size).toEqual(2);
+                                expect(new Multiset([new PotterBook(0)]).union(new Multiset([new PotterBook(0)])).size).toEqual(2);
                             });
                         });
                     });
@@ -101,9 +101,9 @@ describe('A set partition of a multiset', () => {
     describe('is a list of non-empty sets (multisets with no repetitions)', () => {
         describe('which union results in the multiset.', () => {
             it('A single element multiset has a single set partition', () => {
-                expect(allSetPartitions(new Multiset([0]))).toEqual([
-                    [new Multiset([0])]
-                ]);
+                expect(Multiset.allSetPartitions(new Multiset([new PotterBook(0)]))).toEqual(
+                    new Multiset([new Multiset([new PotterBook(0)])])
+                );
             });
         });
     });

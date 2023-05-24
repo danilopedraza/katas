@@ -37,6 +37,28 @@ describe('A multiset', () => {
                     });
                 });
             });
+
+            describe('A multiset is contained in another', () => {
+                describe('if all of its elements are in the other', () => {
+                    describe('at least the same amount of times.', () => {
+                        describe('An empty multiset is contained in every multiset,', () => {
+                            it('like another empty multiset', () => {
+                                expect(new Multiset().contained(new Multiset())).toBeTruthy;
+                            });
+
+                            it('like a single element multiset', () => {
+                                expect(new Multiset().contained(new Multiset([0]))).toBeTruthy;
+                            });
+                        });
+
+                        describe('A single element multiset', () => {
+                            it('should not be contained in an empty multiset', () => {
+                                expect(new Multiset([0]).contained(new Multiset())).toBeFalsy;
+                            });
+                        });
+                    });
+                });
+            });
         });
     });
 });

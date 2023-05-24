@@ -5,6 +5,7 @@
         "lib": [
             "esnext"
         ],
+        "esModuleInterop": true,
         "moduleResolution": "node",
         "sourceMap": true,
         "outDir": "./build/",

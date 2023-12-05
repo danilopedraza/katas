@@ -77,28 +77,13 @@ impl GildedRose {
         }
     }
 
-    fn is_conjured(item: &mut Item) -> bool {
-        return item.name == "Conjured Mana Cake";
-    }
-
-    fn is_backstage_pass(item: &mut Item) -> bool {
-        return item.name == "Backstage passes to a TAFKAL80ETC concert";
-    }
-
-    fn is_aged_brie(item: &mut Item) -> bool {
-        return item.name == "Aged Brie"
-    }
-
     fn update_item_quality(item: &mut Item) {
-        if Self::is_conjured(item) {
-            Self::update_conjured_item_quality(item);
-        } else if Self::is_backstage_pass(item) {
-            Self::update_backstage_pass_quality(item);
-        } else if Self::is_aged_brie(item) {
-            Self::update_aged_brie_quality(item);
-        } else {
-            Self::update_generic_item_quality(item);
-        }
+        match item.name.as_str() {
+            "Conjured Mana Cake" => Self::update_conjured_item_quality(item),
+            "Backstage passes to a TAFKAL80ETC concert" => Self::update_backstage_pass_quality(item),
+            "Aged Brie" => Self::update_aged_brie_quality(item),
+            _ => Self::update_generic_item_quality(item),
+        };
 
         Self::fix_quality_constraints(item);
     }

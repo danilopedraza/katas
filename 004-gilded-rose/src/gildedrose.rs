@@ -35,15 +35,12 @@ impl GildedRose {
     }
 
     fn update_backstage_pass_quality(item: &mut Item) {
-        if item.sell_in < 0 {
-            item.quality = 0;
-        } else if 0 <= item.sell_in && item.sell_in < 5 {
-            item.quality += 3;
-        } else if 5 <= item.sell_in && item.sell_in < 10 {
-            item.quality += 2;
-        } else {
-            item.quality += 1;
-        }
+        item.quality = match item.sell_in {
+            sell_in if sell_in < 0 => 0,
+            0..=4 => item.quality + 3,
+            5..=9 => item.quality + 2,
+            _ => item.quality + 1,
+        };
     }
 
     fn update_aged_brie_quality(item: &mut Item) {

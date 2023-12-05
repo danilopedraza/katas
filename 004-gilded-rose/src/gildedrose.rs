@@ -15,27 +15,6 @@ impl Item<'_> {
             quality,
         }
     }
-
-    fn update_sell_in(&self) -> Item {
-        Self {
-            sell_in: self.sell_in - 1,
-            ..self.clone()
-        }
-    }
-
-    fn update_backstage_pass_quality(&self) -> Item {
-        let quality = match self.sell_in {
-            sell_in if sell_in < 0 => 0,
-            0..=4 => self.quality + 3,
-            5..=9 => self.quality + 2,
-            _ => self.quality + 1,
-        };
-
-        Self {
-            quality,
-            ..self.clone()
-        }
-    }
 }
 
 impl Display for Item<'_> {

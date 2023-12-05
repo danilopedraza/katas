@@ -1,31 +1,54 @@
 use std::{fmt::{self, Display}, cmp};
-pub struct Item {
-    pub name: String,
+
+#[derive(Clone)]
+pub struct Item<'a> {
+    pub name: &'a str,
     pub sell_in: i32,
     pub quality: i32,
 }
 
-impl Item {
-    pub fn new(name: impl Into<String>, sell_in: i32, quality: i32) -> Item {
+impl Item<'_> {
+    pub fn new(name: &str, sell_in: i32, quality: i32) -> Item {
         Item {
-            name: name.into(),
+            name,
             sell_in,
             quality,
         }
     }
+
+    fn update_sell_in(&self) -> Item {
+        Self {
+            sell_in: self.sell_in - 1,
+            ..self.clone()
+        }
+    }
+
+    fn update_backstage_pass_quality(&self) -> Item {
+        let quality = match self.sell_in {
+            sell_in if sell_in < 0 => 0,
+            0..=4 => self.quality + 3,
+            5..=9 => self.quality + 2,
+            _ => self.quality + 1,
+        };
+
+        Self {
+            quality,
+            ..self.clone()
+        }
+    }
 }
 
-impl Display for Item {
+impl Display for Item<'_> {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         write!(f, "{}, {}, {}", self.name, self.sell_in, self.quality)
     }
 }
 
-pub struct GildedRose {
-    pub items: Vec<Item>,
+pub struct GildedRose<'a> {
+    pub items: Vec<Item<'a>>,
 }
 
-impl GildedRose {
+impl GildedRose<'_> {
     pub fn new(items: Vec<Item>) -> GildedRose {
         GildedRose { items }
     }
@@ -73,7 +96,7 @@ impl GildedRose {
     }
 
     fn update_item_quality(item: &mut Item) {
-        match item.name.as_str() {
+        match item.name {
             "Conjured Mana Cake" => Self::update_conjured_item_quality(item),
             "Backstage passes to a TAFKAL80ETC concert" => Self::update_backstage_pass_quality(item),
             "Aged Brie" => Self::update_aged_brie_quality(item),
@@ -84,7 +107,7 @@ impl GildedRose {
     }
 
     fn update_item(item: &mut Item) {
-        match item.name.as_str() {
+        match item.name {
             "Sulfuras, Hand of Ragnaros" => Self::update_item_sell_in(item),
             _ => {
                 Self::update_item_sell_in(item);

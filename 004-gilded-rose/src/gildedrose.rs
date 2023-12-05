@@ -83,17 +83,13 @@ impl GildedRose {
         Self::fix_quality_constraints(item);
     }
 
-    fn is_legendary(item: &mut Item) -> bool {
-        return item.name == "Sulfuras, Hand of Ragnaros";
-    }
-
     fn update_item(item: &mut Item) {
-        Self::update_item_sell_in(item);
-
-        if Self::is_legendary(item) {
-            // nothing to do: quality of legendary items does not change
-        } else {
-            Self::update_item_quality(item);
+        match item.name.as_str() {
+            "Sulfuras, Hand of Ragnaros" => Self::update_item_sell_in(item),
+            _ => {
+                Self::update_item_sell_in(item);
+                Self::update_item_quality(item);
+            }
         }
     }
 

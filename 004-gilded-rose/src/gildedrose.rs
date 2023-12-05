@@ -1,4 +1,4 @@
-use std::fmt::{self, Display};
+use std::{fmt::{self, Display}, cmp};
 pub struct Item {
     pub name: String,
     pub sell_in: i32,
@@ -68,13 +68,8 @@ impl GildedRose {
     }
 
     fn fix_quality_constraints(item: &mut Item) {
-        if item.quality > 50 {
-            item.quality = 50;
-        } else if item.quality < 0 {
-            item.quality = 0;
-        } else {
-            // nothing to do: quality is already within boundaries
-        }
+        item.quality = cmp::min(item.quality, 50);
+        item.quality = cmp::max(item.quality, 0);
     }
 
     fn update_item_quality(item: &mut Item) {

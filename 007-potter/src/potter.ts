@@ -81,33 +81,81 @@ export class PotterBookOrder extends Multiset<PotterBook> {
         super(books);
     }
 
+    private allSpecialOrders() {
+        return [
+            [new PotterBook(0),],
+            [new PotterBook(1),],
+            [new PotterBook(2),],
+            [new PotterBook(3),],
+            [new PotterBook(4),],
+            [new PotterBook(0), new PotterBook(1),],
+            [new PotterBook(0), new PotterBook(2),],
+            [new PotterBook(0), new PotterBook(3),],
+            [new PotterBook(0), new PotterBook(4),],
+            [new PotterBook(1), new PotterBook(2),],
+            [new PotterBook(1), new PotterBook(3),],
+            [new PotterBook(1), new PotterBook(4),],
+            [new PotterBook(2), new PotterBook(3),],
+            [new PotterBook(2), new PotterBook(4),],
+            [new PotterBook(3), new PotterBook(4),],
+            [new PotterBook(0), new PotterBook(1), new PotterBook(2),],
+            [new PotterBook(0), new PotterBook(1), new PotterBook(3),],
+            [new PotterBook(0), new PotterBook(1), new PotterBook(4),],
+            [new PotterBook(0), new PotterBook(2), new PotterBook(3),],
+            [new PotterBook(0), new PotterBook(2), new PotterBook(4),],
+            [new PotterBook(0), new PotterBook(3), new PotterBook(4),],
+            [new PotterBook(1), new PotterBook(2), new PotterBook(3),],
+            [new PotterBook(1), new PotterBook(2), new PotterBook(4),],
+            [new PotterBook(1), new PotterBook(3), new PotterBook(4),],
+            [new PotterBook(2), new PotterBook(3), new PotterBook(4),],
+            [new PotterBook(0), new PotterBook(1), new PotterBook(2), new PotterBook(3),],
+            [new PotterBook(0), new PotterBook(1), new PotterBook(2), new PotterBook(4),],
+            [new PotterBook(0), new PotterBook(1), new PotterBook(3), new PotterBook(4),],
+            [new PotterBook(0), new PotterBook(2), new PotterBook(3), new PotterBook(4),],
+            [new PotterBook(1), new PotterBook(2), new PotterBook(3), new PotterBook(4),],
+            [new PotterBook(0), new PotterBook(1), new PotterBook(2), new PotterBook(3), new PotterBook(4),],
+        ].map((l) => new PotterBookOrder(l));
+    }
+
+    public orderMinus(other: PotterBookOrder) {
+        return new PotterBookOrder([...this.minus(other).elements]);
+    }
+
     public suborder(other: PotterBookOrder) {
         return this.subset(other);
     }
 
     public specialOrders() {
-        const allSpecialSets = [
-            [new PotterBook(0),],
-            [new PotterBook(1),],
-            [new PotterBook(2),],
-            [new PotterBook(3),],
-            [new PotterBook(0), new PotterBook(1),],
-            [new PotterBook(0), new PotterBook(2),],
-            [new PotterBook(0), new PotterBook(3),],
-            [new PotterBook(1), new PotterBook(2),],
-            [new PotterBook(1), new PotterBook(3),],
-            [new PotterBook(2), new PotterBook(3),],
-            [new PotterBook(0), new PotterBook(1), new PotterBook(2),],
-            [new PotterBook(0), new PotterBook(1), new PotterBook(3),],
-            [new PotterBook(0), new PotterBook(2), new PotterBook(3),],
-            [new PotterBook(1), new PotterBook(2), new PotterBook(3),],
-            [new PotterBook(0), new PotterBook(1), new PotterBook(2), new PotterBook(3),],
-        ].map((ss) => new PotterBookOrder(ss));
+        return this.allSpecialOrders().filter((so) => so.suborder(this));
+    }
 
-        return allSpecialSets.filter((ss) => ss.suborder(this));
+    public isSpecial() {
+        return this.allSpecialOrders().some((so) => so.equals(this));
+    }
+
+    public specialDiscount(books: number) {
+        switch (books) {
+            case 1: return 1.0;
+            case 2: return 0.95;
+            case 3: return 0.9;
+            case 4: return 0.8;
+            case 5: return 0.75;
+            default: return 1.0;
+        }
     }
 
     public price() {
-        return 8 * this.elements.length;
+        if (this.elements.length === 0) {
+            return 0;
+        }
+
+        if (this.isSpecial()) {
+            const books = this.elements.length;
+            return 8 * books * this.specialDiscount(books);
+        }
+
+        let prices: number[] = this.specialOrders().map((so) => this.orderMinus(so).price() + so.price());
+
+        return Math.min(...prices);
     }
 }

@@ -13,10 +13,16 @@ describe('The Potter book price calculator', () => {
         expect(new PotterBookOrder([new PotterBook(0), new PotterBook(0), new PotterBook(0),]).price()).toEqual(24);
     });
 
-    // it("should make a discount for two groups of four books", () => {
-    //     expect(new PotterPriceCalculator().getPrice([0, 0, 1, 1, 2, 2, 3, 4]))
-    //     .toEqual(2 * (8 * 4 * 0.8));
-    // });
+    it("should make a discount for two groups of four books", () => {
+        const books = new PotterBookOrder([
+            new PotterBook(0), new PotterBook(0),
+            new PotterBook(1), new PotterBook(1),
+            new PotterBook(2), new PotterBook(2),
+            new PotterBook(3), new PotterBook(4),
+        ]);
+
+        expect(books.price()).toEqual(2 * (8 * 4 * 0.8));
+    });
 });
 
 describe('A multiset', () => {

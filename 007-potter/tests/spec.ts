@@ -130,15 +130,3 @@ describe('A multiset', () => {
         });
     });
 });
-
-describe('A set partition of a multiset', () => {
-    describe('is a list of non-empty sets (multisets with no repetitions)', () => {
-        describe('which union results in the multiset.', () => {
-            it('A single element multiset has a single set partition', () => {
-                expect(Multiset.allSetPartitions(new Multiset([new PotterBook(0)]))).toEqual(
-                    new Multiset([new Multiset([new PotterBook(0)])])
-                );
-            });
-        });
-    });
-});

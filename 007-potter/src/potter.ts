@@ -82,10 +82,6 @@ export class Multiset<T extends Distinguishable> {
 
         return res;
     }
-
-    public static allSetPartitions<T extends Distinguishable>(multiset: Multiset<T>) {
-        return new Multiset([multiset]);
-    }
 }
 
 // export class PotterBookOrder extends Multiset<PotterBook> {

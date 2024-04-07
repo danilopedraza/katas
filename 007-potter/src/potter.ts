@@ -96,7 +96,7 @@ export class PotterBookOrder extends Multiset<PotterBook> {
         return this.subset(other);
     }
 
-    public specialSets() {
+    public specialOrders() {
         const allSpecialSets = [
             [new PotterBook(0),],
             [new PotterBook(1),],

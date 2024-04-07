@@ -156,7 +156,7 @@ describe('A Potter book order', () => {
                             [new PotterBook(0), new PotterBook(1), new PotterBook(2), new PotterBook(3),],
                         ].map((l) => new PotterBookOrder(l));
     
-                        expect(new PotterBookOrder([new PotterBook(0), new PotterBook(1), new PotterBook(2), new PotterBook(3),]).specialSets()).toEqual(specialOrders);
+                        expect(new PotterBookOrder([new PotterBook(0), new PotterBook(1), new PotterBook(2), new PotterBook(3),]).specialOrders()).toEqual(specialOrders);
                     });
 
                     it('an order with the first two books has three special sets', () => {
@@ -166,7 +166,7 @@ describe('A Potter book order', () => {
                             [new PotterBook(0), new PotterBook(1),],
                         ].map((l) => new PotterBookOrder(l));
 
-                        expect(new PotterBookOrder([new PotterBook(0), new PotterBook(0), new PotterBook(1),]).specialSets()).toEqual(specialOrders);
+                        expect(new PotterBookOrder([new PotterBook(0), new PotterBook(0), new PotterBook(1),]).specialOrders()).toEqual(specialOrders);
                     });
                 });
             });

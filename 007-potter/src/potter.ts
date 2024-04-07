@@ -69,7 +69,10 @@ export class Multiset<T extends Distinguishable> {
         if (index === -1) {
             return new Multiset([...this.elements]);
         } else {
-            return new Multiset(this.elements.slice(0, index).concat(this.elements.slice(index + 1, this.elements.length)));
+            return new Multiset(
+                this.elements.slice(0, index)
+                .concat(this.elements.slice(index + 1, this.elements.length))
+            );
         }
     }
 
@@ -84,12 +87,34 @@ export class Multiset<T extends Distinguishable> {
     }
 }
 
-// export class PotterBookOrder extends Multiset<PotterBook> {
-//     constructor(books: PotterBook[]) {
-//         super(books);
-//     }
+export class PotterBookOrder extends Multiset<PotterBook> {
+    constructor(books: PotterBook[]) {
+        super(books);
+    }
 
-//     public suborder(other: PotterBookOrder) {
-//         return this.subset(other);
-//     }
-// }
+    public suborder(other: PotterBookOrder) {
+        return this.subset(other);
+    }
+
+    public specialSets() {
+        const allSpecialSets = [
+            [new PotterBook(0),],
+            [new PotterBook(1),],
+            [new PotterBook(2),],
+            [new PotterBook(3),],
+            [new PotterBook(0), new PotterBook(1),],
+            [new PotterBook(0), new PotterBook(2),],
+            [new PotterBook(0), new PotterBook(3),],
+            [new PotterBook(1), new PotterBook(2),],
+            [new PotterBook(1), new PotterBook(3),],
+            [new PotterBook(2), new PotterBook(3),],
+            [new PotterBook(0), new PotterBook(1), new PotterBook(2),],
+            [new PotterBook(0), new PotterBook(1), new PotterBook(3),],
+            [new PotterBook(0), new PotterBook(2), new PotterBook(3),],
+            [new PotterBook(1), new PotterBook(2), new PotterBook(3),],
+            [new PotterBook(0), new PotterBook(1), new PotterBook(2), new PotterBook(3),],
+        ].map((ss) => new PotterBookOrder(ss));
+
+        return allSpecialSets.filter((ss) => ss.suborder(this));
+    }
+}

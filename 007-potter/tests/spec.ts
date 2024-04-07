@@ -1,4 +1,4 @@
-import { Multiset, PotterBook, PotterPriceCalculator } from '../src/potter';
+import { Multiset, PotterBook, PotterBookOrder, PotterPriceCalculator } from '../src/potter';
 
 describe('The Potter book price calculator', () => {
     it('should return 0 when there are no copies', () => {
@@ -124,6 +124,49 @@ describe('A multiset', () => {
                             const ms = new Multiset([new PotterBook(0),]);
                             expect(ms.minus(new Multiset([new PotterBook(1),]))).toEqual(ms);
                         });
+                    });
+                });
+            });
+        });
+    });
+});
+
+
+describe('A Potter book order', () => {
+    describe('is a multiset of Potter books.', () => {
+        describe('a special order of Potter books', () => {
+            describe('is a suborder of a Potter book order', () => {
+                describe('where every element is different.', () => {
+                    it('an order with all the books has every possible SS', () => {
+                        let specialOrders = [
+                            [new PotterBook(0),],
+                            [new PotterBook(1),],
+                            [new PotterBook(2),],
+                            [new PotterBook(3),],
+                            [new PotterBook(0), new PotterBook(1),],
+                            [new PotterBook(0), new PotterBook(2),],
+                            [new PotterBook(0), new PotterBook(3),],
+                            [new PotterBook(1), new PotterBook(2),],
+                            [new PotterBook(1), new PotterBook(3),],
+                            [new PotterBook(2), new PotterBook(3),],
+                            [new PotterBook(0), new PotterBook(1), new PotterBook(2),],
+                            [new PotterBook(0), new PotterBook(1), new PotterBook(3),],
+                            [new PotterBook(0), new PotterBook(2), new PotterBook(3),],
+                            [new PotterBook(1), new PotterBook(2), new PotterBook(3),],
+                            [new PotterBook(0), new PotterBook(1), new PotterBook(2), new PotterBook(3),],
+                        ].map((l) => new PotterBookOrder(l));
+    
+                        expect(new PotterBookOrder([new PotterBook(0), new PotterBook(1), new PotterBook(2), new PotterBook(3),]).specialSets()).toEqual(specialOrders);
+                    });
+
+                    it('an order with the first two books has three special sets', () => {
+                        let specialOrders = [
+                            [new PotterBook(0),],
+                            [new PotterBook(1),],
+                            [new PotterBook(0), new PotterBook(1),],
+                        ].map((l) => new PotterBookOrder(l));
+
+                        expect(new PotterBookOrder([new PotterBook(0), new PotterBook(0), new PotterBook(1),]).specialSets()).toEqual(specialOrders);
                     });
                 });
             });

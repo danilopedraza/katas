@@ -64,12 +64,23 @@ export class Multiset<T extends Distinguishable> {
     }
 
     public withoutOne(otherElement: T) {
-        return new Multiset(this.elements.filter(
-            (element, index) => 
-                this.elements.slice(0, index).includes(otherElement) ||
-                element != otherElement 
-            )
-        );
+        const index = this.elements.findIndex((element) => element.equals(otherElement));
+
+        if (index === -1) {
+            return new Multiset([...this.elements]);
+        } else {
+            return new Multiset(this.elements.slice(0, index).concat(this.elements.slice(index + 1, this.elements.length)));
+        }
+    }
+
+    public minus(other: Multiset<T>) {
+        let res = new Multiset(this.elements);
+
+        for (const element of other.elements) {
+            res = res.withoutOne(element);
+        }
+
+        return res;
     }
 
     public static allSetPartitions<T extends Distinguishable>(multiset: Multiset<T>) {

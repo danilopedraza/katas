@@ -93,6 +93,40 @@ describe('A multiset', () => {
                     });
                 });
             });
+
+            describe('The difference of two multisets', () => {
+                describe('is the first multiset without the elements of the second.', () => {
+                    describe('a difference with the empty set always results in the first set.', () => {
+                        it('when the first set is empty', () => {
+                            expect(new Multiset().minus(new Multiset()).equals(new Multiset())).toBe(true);
+                        });
+
+                        it('when the first set is a singleton', () => {
+                            const ms = new Multiset([new PotterBook(0)]);
+                            expect(ms.minus(new Multiset()).equals(ms)).toBe(true);
+                        });
+                    });
+
+                    describe('the difference with a nonempty superset works as initially defined', () => {
+                        it('when the multisets are equal', () => {
+                            const ms = new Multiset([new PotterBook(0)]);
+                            expect(ms.minus(ms)).toEqual(new Multiset());
+                        });
+
+                        it('when the first is a superset of the second', () => {
+                            expect(
+                                new Multiset([new PotterBook(0), new PotterBook(0), new PotterBook(1),])
+                                .minus(new Multiset([new PotterBook(0), new PotterBook(1),]))
+                            ).toEqual(new Multiset([new PotterBook(0),]));
+                        });
+                        
+                        it('when the multisets are disjoint', () => {
+                            const ms = new Multiset([new PotterBook(0),]);
+                            expect(ms.minus(new Multiset([new PotterBook(1),]))).toEqual(ms);
+                        });
+                    });
+                });
+            });
         });
     });
 });

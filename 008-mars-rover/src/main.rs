@@ -25,6 +25,40 @@ struct Rover {
     orientation: Orientation,
 }
 
+#[derive(Debug, PartialEq, Eq, Clone)]
+enum Cell {
+    Empty,
+    Occupied,
+}
+
+#[derive(Debug, PartialEq, Eq, Clone)]
+struct Map {
+    data: Vec<Vec<Cell>>,
+}
+
+impl Map {
+    fn parse(input: &str) -> Result<Self, ()> {
+        let mut data = Vec::new();
+
+        for line in input.lines() {
+            let mut row = Vec::new();
+            for chr in line.chars() {
+                let cell = match chr {
+                    '🟩' => Ok(Cell::Empty),
+                    '\u{27A1}' => Ok(Cell::Empty),
+                    '🌳' => Ok(Cell::Occupied),
+                    _ => Err(()),
+                }?;
+
+                row.push(cell);
+            }
+            data.push(row);
+        }
+
+        Ok(Self { data })
+    }
+}
+
 impl Rover {
     fn rotate_left(&self) -> Self {
         let new_orientation = match self.orientation {
@@ -70,9 +104,19 @@ fn main() {
 
 #[cfg(test)]
 mod tests {
+    use crate::Cell;
+    use crate::Map;
     use crate::Orientation;
     use crate::Position;
     use crate::Rover;
+
+    fn empty() -> Cell {
+        Cell::Empty
+    }
+
+    fn occupied() -> Cell {
+        Cell::Occupied
+    }
 
     #[test]
     fn rover_initial_state() {
@@ -127,5 +171,27 @@ mod tests {
                 },
             );
         }
+    }
+
+    #[test]
+    fn parse_map() {
+        let input = "🟩🟩🌳🟩🟩
+🟩🟩🟩🟩🟩
+🟩🟩🟩🌳🟩
+🟩🌳🟩🟩🟩
+➡️🟩🟩🟩🟩";
+
+        assert_eq!(
+            Map::parse(input),
+            Ok(Map {
+                data: vec![
+                    vec![empty(), empty(), occupied(), empty(), empty()],
+                    vec![empty(), empty(), empty(), empty(), empty()],
+                    vec![empty(), empty(), empty(), occupied(), empty()],
+                    vec![empty(), occupied(), empty(), empty(), empty()],
+                    vec![empty(), empty(), empty(), empty(), empty()],
+                ],
+            })
+        );
     }
 }

@@ -29,6 +29,7 @@ struct Rover {
 enum Cell {
     Empty,
     Occupied,
+    UTF
 }
 
 #[derive(Debug, PartialEq, Eq, Clone)]
@@ -47,10 +48,13 @@ impl Map {
                     '🟩' => Ok(Cell::Empty),
                     '\u{27A1}' => Ok(Cell::Empty),
                     '🌳' => Ok(Cell::Occupied),
+                    '\u{FE0F}' => Ok(Cell::UTF),
                     _ => Err(()),
                 }?;
 
-                row.push(cell);
+                if cell != Cell::UTF {
+                    row.push(cell);
+                }
             }
             data.push(row);
         }

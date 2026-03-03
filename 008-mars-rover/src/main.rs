@@ -29,7 +29,6 @@ struct Rover {
 enum Cell {
     Empty,
     Occupied,
-    UTF
 }
 
 #[derive(Debug, PartialEq, Eq, Clone)]
@@ -45,16 +44,14 @@ impl Map {
             let mut row = Vec::new();
             for chr in line.chars() {
                 let cell = match chr {
-                    '🟩' => Ok(Cell::Empty),
-                    '\u{27A1}' => Ok(Cell::Empty),
-                    '🌳' => Ok(Cell::Occupied),
-                    '\u{FE0F}' => Ok(Cell::UTF),
+                    '🟩' => Ok(Some(Cell::Empty)),
+                    '\u{27A1}' => Ok(Some(Cell::Empty)),
+                    '🌳' => Ok(Some(Cell::Occupied)),
+                    '\u{FE0F}' => Ok(None),
                     _ => Err(()),
                 }?;
 
-                if cell != Cell::UTF {
-                    row.push(cell);
-                }
+                cell.map(|cell| row.push(cell));
             }
             data.push(row);
         }
@@ -99,6 +96,19 @@ impl Rover {
             position,
             orientation,
         }
+    }
+
+    fn get_initial_position(input: &str) -> Option<Self> {
+        for (line, y) in input.lines().zip(0..) {
+            for (chr, x) in line.chars().zip(0..) {
+                match chr {
+                    '\u{27A1}' => return Some(Self::new(Position::new(x, y), Orientation::East)),
+                    _ => continue,
+                }
+            }
+        }
+
+        None
     }
 }
 
@@ -196,6 +206,23 @@ mod tests {
                     vec![empty(), empty(), empty(), empty(), empty()],
                 ],
             })
+        );
+    }
+
+    #[test]
+    fn get_initial_rover() {
+        let input = "🟩🟩🌳🟩🟩
+🟩🟩🟩🟩🟩
+🟩🟩🟩🌳🟩
+🟩🌳🟩🟩🟩
+➡️🟩🟩🟩🟩";
+
+        assert_eq!(
+            Rover::get_initial_position(input),
+            Some(Rover::new(
+                Position { x: 0, y: 4 },
+                Orientation::East
+            ))
         );
     }
 }

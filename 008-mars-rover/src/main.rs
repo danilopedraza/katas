@@ -32,6 +32,26 @@ enum Cell {
 }
 
 #[derive(Debug, PartialEq, Eq, Clone)]
+enum Instruction {
+    MoveForward,
+    TurnLeft,
+    TurnRight,
+}
+
+fn parse_instructions(input: &str) -> Vec<Instruction> {
+    let mut instructions = Vec::new();
+    for c in input.chars() {
+        match c {
+            '\u{2B06}' => instructions.push(Instruction::MoveForward),
+            '\u{27A1}' => instructions.push(Instruction::TurnRight),
+            '\u{2B05}' => instructions.push(Instruction::TurnLeft),
+            _ => continue,
+        }
+    }
+    instructions
+}
+
+#[derive(Debug, PartialEq, Eq, Clone)]
 struct Map {
     data: Vec<Vec<Cell>>,
 }
@@ -51,7 +71,9 @@ impl Map {
                     _ => Err(()),
                 }?;
 
-                cell.map(|cell| row.push(cell));
+                if let Some(cell) = cell {
+                    row.push(cell)
+                }
             }
             data.push(row);
         }
@@ -119,10 +141,12 @@ fn main() {
 #[cfg(test)]
 mod tests {
     use crate::Cell;
+    use crate::Instruction;
     use crate::Map;
     use crate::Orientation;
     use crate::Position;
     use crate::Rover;
+    use crate::parse_instructions;
 
     fn empty() -> Cell {
         Cell::Empty
@@ -219,10 +243,32 @@ mod tests {
 
         assert_eq!(
             Rover::get_initial_position(input),
-            Some(Rover::new(
-                Position { x: 0, y: 4 },
-                Orientation::East
-            ))
+            Some(Rover::new(Position { x: 0, y: 4 }, Orientation::East))
+        );
+    }
+
+    #[test]
+    fn parse_empty_instructions() {
+        let input = "";
+        assert_eq!(parse_instructions(input), vec![]);
+    }
+
+    #[test]
+    fn parse_single_instruction_move_forward() {
+        let input = "⬆️";
+        assert_eq!(parse_instructions(input), vec![Instruction::MoveForward]);
+    }
+
+    #[test]
+    fn parse_multiple_instructions() {
+        let input = "⬆️➡️⬅️";
+        assert_eq!(
+            parse_instructions(input),
+            vec![
+                Instruction::MoveForward,
+                Instruction::TurnRight,
+                Instruction::TurnLeft
+            ]
         );
     }
 }

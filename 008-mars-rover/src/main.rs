@@ -83,7 +83,7 @@ impl Map {
 }
 
 impl Rover {
-    fn rotate_left(&self) -> Self {
+    fn rotate_left(self) -> Self {
         let new_orientation = match self.orientation {
             Orientation::North => Orientation::West,
             Orientation::West => Orientation::South,
@@ -93,7 +93,7 @@ impl Rover {
 
         Self {
             orientation: new_orientation,
-            ..self.to_owned()
+            ..self
         }
     }
 
@@ -213,13 +213,15 @@ mod tests {
 
     #[test]
     fn parse_map() {
-        let input = &unindent("
+        let input = &unindent(
+            "
             🟩🟩🌳🟩🟩
             🟩🟩🟩🟩🟩
             🟩🟩🟩🌳🟩
             🟩🌳🟩🟩🟩
             ➡️🟩🟩🟩🟩
-        ");
+        ",
+        );
 
         assert_eq!(
             Map::parse(input),
@@ -237,13 +239,15 @@ mod tests {
 
     #[test]
     fn get_initial_rover() {
-        let input = &unindent("
+        let input = &unindent(
+            "
             🟩🟩🌳🟩🟩
             🟩🟩🟩🟩🟩
             🟩🟩🟩🌳🟩
             🟩🌳🟩🟩🟩
             ➡️🟩🟩🟩🟩
-        ");
+        ",
+        );
 
         assert_eq!(
             Rover::get_initial_position(input),

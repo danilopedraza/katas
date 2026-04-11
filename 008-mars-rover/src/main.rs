@@ -140,6 +140,8 @@ fn main() {
 
 #[cfg(test)]
 mod tests {
+    use unindent::unindent;
+
     use crate::Cell;
     use crate::Instruction;
     use crate::Map;
@@ -213,11 +215,13 @@ mod tests {
 
     #[test]
     fn parse_map() {
-        let input = "🟩🟩🌳🟩🟩
-🟩🟩🟩🟩🟩
-🟩🟩🟩🌳🟩
-🟩🌳🟩🟩🟩
-➡️🟩🟩🟩🟩";
+        let input = &unindent("
+            🟩🟩🌳🟩🟩
+            🟩🟩🟩🟩🟩
+            🟩🟩🟩🌳🟩
+            🟩🌳🟩🟩🟩
+            ➡️🟩🟩🟩🟩
+        ");
 
         assert_eq!(
             Map::parse(input),
@@ -235,11 +239,13 @@ mod tests {
 
     #[test]
     fn get_initial_rover() {
-        let input = "🟩🟩🌳🟩🟩
-🟩🟩🟩🟩🟩
-🟩🟩🟩🌳🟩
-🟩🌳🟩🟩🟩
-➡️🟩🟩🟩🟩";
+        let input = &unindent("
+            🟩🟩🌳🟩🟩
+            🟩🟩🟩🟩🟩
+            🟩🟩🟩🌳🟩
+            🟩🌳🟩🟩🟩
+            ➡️🟩🟩🟩🟩
+        ");
 
         assert_eq!(
             Rover::get_initial_position(input),

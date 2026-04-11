@@ -110,9 +110,7 @@ impl Rover {
             ..self
         }
     }
-}
 
-impl Rover {
     fn new(position: Position, orientation: Orientation) -> Self {
         Self {
             position,

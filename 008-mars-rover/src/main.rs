@@ -1,3 +1,5 @@
+use unindent::unindent;
+
 #[derive(Debug, Default, PartialEq, Eq, Clone)]
 enum Orientation {
     South,
@@ -28,7 +30,8 @@ struct Rover {
 #[derive(Debug, PartialEq, Eq, Clone)]
 enum Cell {
     Empty,
-    Occupied,
+    WithRover(Rover),
+    WithObstacle,
 }
 
 #[derive(Debug, PartialEq, Eq, Clone)]
@@ -54,20 +57,36 @@ fn parse_instructions(input: &str) -> Vec<Instruction> {
 #[derive(Debug, PartialEq, Eq, Clone)]
 struct Map {
     data: Vec<Vec<Cell>>,
+    rover_instructions: Vec<Instruction>,
 }
 
 impl Map {
-    fn parse(input: &str) -> Result<Self, ()> {
+    fn parse(input: &str, rover_instructions: Vec<Instruction>) -> Result<Self, ()> {
         let mut data = Vec::new();
 
-        for line in input.lines() {
+        for (y, line) in input.lines().enumerate() {
             let mut row = Vec::new();
-            for chr in line.chars() {
+            for (x, chr) in line.chars().enumerate() {
                 let cell = match chr {
                     '🟩' => Ok(Some(Cell::Empty)),
-                    '\u{27A1}' => Ok(Some(Cell::Empty)),
-                    '🌳' => Ok(Some(Cell::Occupied)),
-                    '\u{FE0F}' => Ok(None),
+                    '\u{27A1}' => Ok(Some(Cell::WithRover(Rover::new(
+                        Position::new(x as i64, y as i64),
+                        Orientation::East,
+                    )))),
+                    '\u{2B06}' => Ok(Some(Cell::WithRover(Rover::new(
+                        Position::new(x as i64, y as i64),
+                        Orientation::North,
+                    )))),
+                    '\u{2B05}' => Ok(Some(Cell::WithRover(Rover::new(
+                        Position::new(x as i64, y as i64),
+                        Orientation::West,
+                    )))),
+                    '\u{2B63}' => Ok(Some(Cell::WithRover(Rover::new(
+                        Position::new(x as i64, y as i64),
+                        Orientation::South,
+                    )))),
+                    '🌳' => Ok(Some(Cell::WithObstacle)),
+                    '\u{FE0F}' => Ok(None), // Unicode shenanigans
                     _ => Err(()),
                 }?;
 
@@ -78,7 +97,10 @@ impl Map {
             data.push(row);
         }
 
-        Ok(Self { data })
+        Ok(Self {
+            data,
+            rover_instructions,
+        })
     }
 }
 
@@ -133,7 +155,20 @@ impl Rover {
 }
 
 fn main() {
-    println!("Hello, world!");
+    let instructions = parse_instructions("⬆️➡️⬅️");
+    let _map = Map::parse(
+        &unindent(
+            "
+            🟩🟩🌳🟩🟩
+            🟩🟩🟩🟩🟩
+            🟩🟩🟩🌳🟩
+            🟩🌳🟩🟩🟩
+            ➡️🟩🟩🟩🟩
+        ",
+        ),
+        instructions,
+    )
+    .expect("Failed parsing the map");
 }
 
 #[cfg(test)]
@@ -152,8 +187,12 @@ mod tests {
         Cell::Empty
     }
 
-    fn occupied() -> Cell {
-        Cell::Occupied
+    fn cell_with_obstacle() -> Cell {
+        Cell::WithObstacle
+    }
+
+    fn cell_with_rover(position: Position, orientation: Orientation) -> Cell {
+        Cell::WithRover(Rover::new(position, orientation))
     }
 
     #[test]
@@ -212,7 +251,73 @@ mod tests {
     }
 
     #[test]
-    fn parse_map() {
+    fn parse_map_north() {
+        let input = &unindent(
+            "
+            🟩🟩🌳🟩🟩
+            🟩🟩🟩🟩🟩
+            🟩🟩🟩🌳🟩
+            🟩🌳🟩🟩🟩
+            ⬆🟩🟩🟩🟩
+        ",
+        );
+
+        assert_eq!(
+            Map::parse(input, vec![]),
+            Ok(Map {
+                data: vec![
+                    vec![empty(), empty(), cell_with_obstacle(), empty(), empty()],
+                    vec![empty(), empty(), empty(), empty(), empty()],
+                    vec![empty(), empty(), empty(), cell_with_obstacle(), empty()],
+                    vec![empty(), cell_with_obstacle(), empty(), empty(), empty()],
+                    vec![
+                        cell_with_rover(Position::new(0, 4), Orientation::North),
+                        empty(),
+                        empty(),
+                        empty(),
+                        empty()
+                    ],
+                ],
+                rover_instructions: vec![],
+            })
+        );
+    }
+
+    #[test]
+    fn parse_map_south() {
+        let input = &unindent(
+            "
+            🟩🟩🌳🟩🟩
+            🟩🟩⭣🟩🟩
+            🟩🟩🟩🌳🟩
+            🟩🌳🟩🟩🟩
+            🟩🟩🟩🟩🟩
+        ",
+        );
+
+        assert_eq!(
+            Map::parse(input, vec![]),
+            Ok(Map {
+                data: vec![
+                    vec![empty(), empty(), cell_with_obstacle(), empty(), empty()],
+                    vec![
+                        empty(),
+                        empty(),
+                        cell_with_rover(Position::new(2, 1), Orientation::South),
+                        empty(),
+                        empty()
+                    ],
+                    vec![empty(), empty(), empty(), cell_with_obstacle(), empty()],
+                    vec![empty(), cell_with_obstacle(), empty(), empty(), empty()],
+                    vec![empty(), empty(), empty(), empty(), empty()],
+                ],
+                rover_instructions: vec![],
+            })
+        );
+    }
+
+    #[test]
+    fn parse_map_east() {
         let input = &unindent(
             "
             🟩🟩🌳🟩🟩
@@ -224,15 +329,55 @@ mod tests {
         );
 
         assert_eq!(
-            Map::parse(input),
+            Map::parse(input, vec![]),
             Ok(Map {
                 data: vec![
-                    vec![empty(), empty(), occupied(), empty(), empty()],
+                    vec![empty(), empty(), cell_with_obstacle(), empty(), empty()],
                     vec![empty(), empty(), empty(), empty(), empty()],
-                    vec![empty(), empty(), empty(), occupied(), empty()],
-                    vec![empty(), occupied(), empty(), empty(), empty()],
+                    vec![empty(), empty(), empty(), cell_with_obstacle(), empty()],
+                    vec![empty(), cell_with_obstacle(), empty(), empty(), empty()],
+                    vec![
+                        cell_with_rover(Position::new(0, 4), Orientation::East),
+                        empty(),
+                        empty(),
+                        empty(),
+                        empty()
+                    ],
+                ],
+                rover_instructions: vec![],
+            })
+        );
+    }
+
+    #[test]
+    fn parse_map_west() {
+        let input = &unindent(
+            "
+            🟩🟩🌳🟩🟩
+            🟩🟩⬅🟩🟩
+            🟩🟩🟩🌳🟩
+            🟩🌳🟩🟩🟩
+            🟩🟩🟩🟩🟩
+        ",
+        );
+
+        assert_eq!(
+            Map::parse(input, vec![]),
+            Ok(Map {
+                data: vec![
+                    vec![empty(), empty(), cell_with_obstacle(), empty(), empty()],
+                    vec![
+                        empty(),
+                        empty(),
+                        cell_with_rover(Position::new(2, 1), Orientation::West),
+                        empty(),
+                        empty()
+                    ],
+                    vec![empty(), empty(), empty(), cell_with_obstacle(), empty()],
+                    vec![empty(), cell_with_obstacle(), empty(), empty(), empty()],
                     vec![empty(), empty(), empty(), empty(), empty()],
                 ],
+                rover_instructions: vec![],
             })
         );
     }

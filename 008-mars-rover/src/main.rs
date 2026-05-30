@@ -1,6 +1,6 @@
 use unindent::unindent;
 
-#[derive(Debug, Default, PartialEq, Eq, Clone)]
+#[derive(Debug, Default, PartialEq, Eq, Clone, Copy)]
 enum Orientation {
     South,
     #[default]
@@ -101,6 +101,24 @@ impl Map {
             data,
             rover_instructions,
         })
+    }
+
+    fn iterate_once(&mut self) {
+        match self.rover_instructions.pop() {
+            None => return,
+            Some(_instruction) => {
+                let (cur_x, cur_y) = (0, 0);
+                let (new_x, new_y) = (1, 0);
+
+                if let Cell::WithRover(rover) = &self.data[cur_y][cur_x] {
+                    let new_orientation = rover.orientation;
+                    let new_rover =
+                        Rover::new(Position::new(new_x as i64, new_y as i64), new_orientation);
+                    self.data[new_y][new_x] = Cell::WithRover(new_rover);
+                    self.data[cur_y][cur_x] = Cell::Empty;
+                }
+            }
+        }
     }
 }
 
@@ -422,6 +440,48 @@ mod tests {
                 Instruction::TurnRight,
                 Instruction::TurnLeft
             ]
+        );
+    }
+
+    #[test]
+    fn no_move() {
+        let mut map = Map {
+            data: vec![],
+            rover_instructions: vec![],
+        };
+
+        map.iterate_once();
+
+        assert_eq!(
+            map,
+            Map {
+                data: vec![],
+                rover_instructions: vec![]
+            }
+        );
+    }
+
+    #[test]
+    fn simple_move() {
+        let mut map = Map {
+            data: vec![vec![
+                cell_with_rover(Position { x: 0, y: 0 }, Orientation::East),
+                empty(),
+            ]],
+            rover_instructions: vec![Instruction::MoveForward],
+        };
+
+        map.iterate_once();
+
+        assert_eq!(
+            map,
+            Map {
+                data: vec![vec![
+                    empty(),
+                    cell_with_rover(Position { x: 1, y: 0 }, Orientation::East),
+                ]],
+                rover_instructions: vec![],
+            }
         );
     }
 }

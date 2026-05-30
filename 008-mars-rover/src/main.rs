@@ -10,20 +10,7 @@ enum Orientation {
 }
 
 #[derive(Debug, Default, PartialEq, Eq, Clone)]
-struct Position {
-    x: i64,
-    y: i64,
-}
-
-impl Position {
-    fn new(x: i64, y: i64) -> Self {
-        Self { x, y }
-    }
-}
-
-#[derive(Debug, Default, PartialEq, Eq, Clone)]
 struct Rover {
-    position: Position,
     orientation: Orientation,
 }
 
@@ -64,27 +51,15 @@ impl Map {
     fn parse(input: &str, rover_instructions: Vec<Instruction>) -> Result<Self, ()> {
         let mut data = Vec::new();
 
-        for (y, line) in input.lines().enumerate() {
+        for line in input.lines() {
             let mut row = Vec::new();
-            for (x, chr) in line.chars().enumerate() {
+            for chr in line.chars() {
                 let cell = match chr {
                     '🟩' => Ok(Some(Cell::Empty)),
-                    '\u{27A1}' => Ok(Some(Cell::WithRover(Rover::new(
-                        Position::new(x as i64, y as i64),
-                        Orientation::East,
-                    )))),
-                    '\u{2B06}' => Ok(Some(Cell::WithRover(Rover::new(
-                        Position::new(x as i64, y as i64),
-                        Orientation::North,
-                    )))),
-                    '\u{2B05}' => Ok(Some(Cell::WithRover(Rover::new(
-                        Position::new(x as i64, y as i64),
-                        Orientation::West,
-                    )))),
-                    '\u{2B63}' => Ok(Some(Cell::WithRover(Rover::new(
-                        Position::new(x as i64, y as i64),
-                        Orientation::South,
-                    )))),
+                    '\u{27A1}' => Ok(Some(Cell::WithRover(Rover::new(Orientation::East)))),
+                    '\u{2B06}' => Ok(Some(Cell::WithRover(Rover::new(Orientation::North)))),
+                    '\u{2B05}' => Ok(Some(Cell::WithRover(Rover::new(Orientation::West)))),
+                    '\u{2B63}' => Ok(Some(Cell::WithRover(Rover::new(Orientation::South)))),
                     '🌳' => Ok(Some(Cell::WithObstacle)),
                     '\u{FE0F}' => Ok(None), // Unicode shenanigans
                     _ => Err(()),
@@ -112,8 +87,7 @@ impl Map {
 
                 if let Cell::WithRover(rover) = &self.data[cur_y][cur_x] {
                     let new_orientation = rover.orientation;
-                    let new_rover =
-                        Rover::new(Position::new(new_x as i64, new_y as i64), new_orientation);
+                    let new_rover = Rover::new(new_orientation);
                     self.data[new_y][new_x] = Cell::WithRover(new_rover);
                     self.data[cur_y][cur_x] = Cell::Empty;
                 }
@@ -151,24 +125,8 @@ impl Rover {
         }
     }
 
-    fn new(position: Position, orientation: Orientation) -> Self {
-        Self {
-            position,
-            orientation,
-        }
-    }
-
-    fn get_initial_position(input: &str) -> Option<Self> {
-        for (line, y) in input.lines().zip(0..) {
-            for (chr, x) in line.chars().zip(0..) {
-                match chr {
-                    '\u{27A1}' => return Some(Self::new(Position::new(x, y), Orientation::East)),
-                    _ => continue,
-                }
-            }
-        }
-
-        None
+    fn new(orientation: Orientation) -> Self {
+        Self { orientation }
     }
 }
 
@@ -197,7 +155,6 @@ mod tests {
     use crate::Instruction;
     use crate::Map;
     use crate::Orientation;
-    use crate::Position;
     use crate::Rover;
     use crate::parse_instructions;
 
@@ -209,8 +166,8 @@ mod tests {
         Cell::WithObstacle
     }
 
-    fn cell_with_rover(position: Position, orientation: Orientation) -> Cell {
-        Cell::WithRover(Rover::new(position, orientation))
+    fn cell_with_rover(orientation: Orientation) -> Cell {
+        Cell::WithRover(Rover::new(orientation))
     }
 
     #[test]
@@ -218,7 +175,6 @@ mod tests {
         assert_eq!(
             Rover::default(),
             Rover {
-                position: Position { x: 0, y: 0 },
                 orientation: Orientation::North
             },
         );
@@ -236,13 +192,7 @@ mod tests {
         let mut rover = Rover::default();
         for orientation in expected_orientations {
             rover = rover.rotate_left();
-            assert_eq!(
-                rover,
-                Rover {
-                    position: Position { x: 0, y: 0 },
-                    orientation,
-                },
-            );
+            assert_eq!(rover, Rover { orientation },);
         }
     }
 
@@ -258,13 +208,7 @@ mod tests {
         let mut rover = Rover::default();
         for orientation in expected_orientations {
             rover = rover.rotate_right();
-            assert_eq!(
-                rover,
-                Rover {
-                    position: Position { x: 0, y: 0 },
-                    orientation,
-                },
-            );
+            assert_eq!(rover, Rover { orientation },);
         }
     }
 
@@ -289,7 +233,7 @@ mod tests {
                     vec![empty(), empty(), empty(), cell_with_obstacle(), empty()],
                     vec![empty(), cell_with_obstacle(), empty(), empty(), empty()],
                     vec![
-                        cell_with_rover(Position::new(0, 4), Orientation::North),
+                        cell_with_rover(Orientation::North),
                         empty(),
                         empty(),
                         empty(),
@@ -321,7 +265,7 @@ mod tests {
                     vec![
                         empty(),
                         empty(),
-                        cell_with_rover(Position::new(2, 1), Orientation::South),
+                        cell_with_rover(Orientation::South),
                         empty(),
                         empty()
                     ],
@@ -355,7 +299,7 @@ mod tests {
                     vec![empty(), empty(), empty(), cell_with_obstacle(), empty()],
                     vec![empty(), cell_with_obstacle(), empty(), empty(), empty()],
                     vec![
-                        cell_with_rover(Position::new(0, 4), Orientation::East),
+                        cell_with_rover(Orientation::East),
                         empty(),
                         empty(),
                         empty(),
@@ -387,7 +331,7 @@ mod tests {
                     vec![
                         empty(),
                         empty(),
-                        cell_with_rover(Position::new(2, 1), Orientation::West),
+                        cell_with_rover(Orientation::West),
                         empty(),
                         empty()
                     ],
@@ -397,24 +341,6 @@ mod tests {
                 ],
                 rover_instructions: vec![],
             })
-        );
-    }
-
-    #[test]
-    fn get_initial_rover() {
-        let input = &unindent(
-            "
-            🟩🟩🌳🟩🟩
-            🟩🟩🟩🟩🟩
-            🟩🟩🟩🌳🟩
-            🟩🌳🟩🟩🟩
-            ➡️🟩🟩🟩🟩
-        ",
-        );
-
-        assert_eq!(
-            Rover::get_initial_position(input),
-            Some(Rover::new(Position { x: 0, y: 4 }, Orientation::East))
         );
     }
 
@@ -464,10 +390,7 @@ mod tests {
     #[test]
     fn simple_move() {
         let mut map = Map {
-            data: vec![vec![
-                cell_with_rover(Position { x: 0, y: 0 }, Orientation::East),
-                empty(),
-            ]],
+            data: vec![vec![cell_with_rover(Orientation::East), empty()]],
             rover_instructions: vec![Instruction::MoveForward],
         };
 
@@ -476,10 +399,7 @@ mod tests {
         assert_eq!(
             map,
             Map {
-                data: vec![vec![
-                    empty(),
-                    cell_with_rover(Position { x: 1, y: 0 }, Orientation::East),
-                ]],
+                data: vec![vec![empty(), cell_with_rover(Orientation::East),]],
                 rover_instructions: vec![],
             }
         );

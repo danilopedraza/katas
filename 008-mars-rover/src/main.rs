@@ -9,6 +9,17 @@ enum Orientation {
     West,
 }
 
+impl Orientation {
+    fn delta(&self) -> (isize, isize) {
+        match self {
+            Orientation::South => (0, 1),
+            Orientation::North => (0, -1),
+            Orientation::East => (1, 0),
+            Orientation::West => (-1, 0),
+        }
+    }
+}
+
 #[derive(Debug, Default, PartialEq, Eq, Clone)]
 struct Rover {
     orientation: Orientation,
@@ -81,9 +92,21 @@ impl Map {
     fn iterate_once(&mut self) {
         match self.rover_instructions.pop() {
             None => return,
-            Some(_instruction) => {
+            Some(Instruction::MoveForward) => {
                 let (cur_x, cur_y) = (0, 0);
-                let (new_x, new_y) = (1, 0);
+                let (dx, dy) = if let Cell::WithRover(rover) = &self.data[cur_y][cur_x] {
+                    rover.orientation.delta()
+                } else {
+                    unreachable!()
+                };
+                let (new_x, new_y) = (
+                    (cur_x as isize + dx) as usize,
+                    (cur_y as isize + dy) as usize,
+                );
+
+                if let Cell::WithObstacle = &self.data[new_y][new_x] {
+                    return;
+                }
 
                 if let Cell::WithRover(rover) = &self.data[cur_y][cur_x] {
                     let new_orientation = rover.orientation;
@@ -92,6 +115,8 @@ impl Map {
                     self.data[cur_y][cur_x] = Cell::Empty;
                 }
             }
+            Some(Instruction::TurnLeft) => todo!(),
+            Some(Instruction::TurnRight) => todo!(),
         }
     }
 }
@@ -400,6 +425,49 @@ mod tests {
             map,
             Map {
                 data: vec![vec![empty(), cell_with_rover(Orientation::East),]],
+                rover_instructions: vec![],
+            }
+        );
+    }
+
+    #[test]
+    fn simple_move_with_obstacle() {
+        let mut map = Map {
+            data: vec![vec![
+                cell_with_rover(Orientation::East),
+                cell_with_obstacle(),
+            ]],
+            rover_instructions: vec![Instruction::MoveForward],
+        };
+
+        map.iterate_once();
+
+        assert_eq!(
+            map,
+            Map {
+                data: vec![vec![
+                    cell_with_rover(Orientation::East),
+                    cell_with_obstacle()
+                ],],
+
+                rover_instructions: vec![],
+            }
+        );
+    }
+
+    #[test]
+    fn move_south() {
+        let mut map = Map {
+            data: vec![vec![cell_with_rover(Orientation::South)], vec![empty()]],
+            rover_instructions: vec![Instruction::MoveForward],
+        };
+
+        map.iterate_once();
+
+        assert_eq!(
+            map,
+            Map {
+                data: vec![vec![empty(),], vec![cell_with_rover(Orientation::South),]],
                 rover_instructions: vec![],
             }
         );
